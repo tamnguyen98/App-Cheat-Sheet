@@ -1,0 +1,41 @@
+{
+  "id": "email-setup-android",
+  "title": "Set up email on your Android phone",
+  "version": 1,
+  "lastUpdated": "2025-01-15",
+  "deviceFamily": ["android-generic"],
+  "language": "en",
+  "category": "Email",
+  "steps": [
+    {
+      "stepNumber": 1,
+      "text": "Open the Settings app, then tap Accounts or Users and accounts.",
+      "image": "",
+      "tts": "Open the Settings app, then tap Accounts or Users and accounts."
+    },
+    {
+      "stepNumber": 2,
+      "text": "Tap \"Add account\" and choose the type (Google, Outlook, or Other).",
+      "image": "",
+      "tts": "Tap Add account and choose the type: Google, Outlook, or Other."
+    },
+    {
+      "stepNumber": 3,
+      "text": "Enter your email address and tap Next.",
+      "image": "",
+      "tts": "Enter your email address and tap Next."
+    },
+    {
+      "stepNumber": 4,
+      "text": "Enter your password when asked, then tap Sign in or Next.",
+      "image": "",
+      "tts": "Enter your password when asked, then tap Sign in or Next."
+    },
+    {
+      "stepNumber": 5,
+      "text": "Follow any extra steps (like turning on sync). When you see \"Account added,\" you're done.",
+      "image": "",
+      "tts": "Follow any extra steps like turning on sync. When you see Account added, you're done."
+    }
+  ]
+}

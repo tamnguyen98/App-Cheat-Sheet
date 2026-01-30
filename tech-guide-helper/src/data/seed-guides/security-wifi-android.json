@@ -1,0 +1,35 @@
+{
+  "id": "security-wifi-android",
+  "title": "Connect to Wi‑Fi on Android",
+  "version": 1,
+  "lastUpdated": "2025-01-15",
+  "deviceFamily": ["android-generic"],
+  "language": "en",
+  "category": "Security",
+  "steps": [
+    {
+      "stepNumber": 1,
+      "text": "Open Settings and tap Network and internet or Connections.",
+      "image": "",
+      "tts": "Open Settings and tap Network and internet or Connections."
+    },
+    {
+      "stepNumber": 2,
+      "text": "Tap Wi‑Fi. Make sure the switch is On.",
+      "image": "",
+      "tts": "Tap Wi-Fi. Make sure the switch is On."
+    },
+    {
+      "stepNumber": 3,
+      "text": "Tap the name of your home or office network in the list.",
+      "image": "",
+      "tts": "Tap the name of your home or office network in the list."
+    },
+    {
+      "stepNumber": 4,
+      "text": "Enter the Wi‑Fi password if asked, then tap Connect. When it says Connected, you're done.",
+      "image": "",
+      "tts": "Enter the Wi-Fi password if asked, then tap Connect. When it says Connected, you're done."
+    }
+  ]
+}

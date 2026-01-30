@@ -1,0 +1,35 @@
+{
+  "id": "phone-basics-calls-android",
+  "title": "Make and answer calls on Android",
+  "version": 1,
+  "lastUpdated": "2025-01-15",
+  "deviceFamily": ["android-generic"],
+  "language": "en",
+  "category": "Phone Basics",
+  "steps": [
+    {
+      "stepNumber": 1,
+      "text": "To make a call: Open the Phone app (green phone icon).",
+      "image": "",
+      "tts": "To make a call, open the Phone app. It has a green phone icon."
+    },
+    {
+      "stepNumber": 2,
+      "text": "Tap the keypad tab, type the number, then tap the green call button.",
+      "image": "",
+      "tts": "Tap the keypad tab, type the number, then tap the green call button."
+    },
+    {
+      "stepNumber": 3,
+      "text": "To answer a call: When the phone rings, swipe the green answer icon toward the center of the screen.",
+      "image": "",
+      "tts": "To answer a call, when the phone rings, swipe the green answer icon toward the center of the screen."
+    },
+    {
+      "stepNumber": 4,
+      "text": "To end a call: Tap the red hang-up button.",
+      "image": "",
+      "tts": "To end a call, tap the red hang-up button."
+    }
+  ]
+}

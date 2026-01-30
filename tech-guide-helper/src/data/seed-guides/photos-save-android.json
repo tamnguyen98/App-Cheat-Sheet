@@ -1,0 +1,35 @@
+{
+  "id": "photos-save-android",
+  "title": "Save a photo from a text or link on Android",
+  "version": 1,
+  "lastUpdated": "2025-01-15",
+  "deviceFamily": ["android-generic"],
+  "language": "en",
+  "category": "Photos",
+  "steps": [
+    {
+      "stepNumber": 1,
+      "text": "Open the message or webpage where you see the photo.",
+      "image": "",
+      "tts": "Open the message or webpage where you see the photo."
+    },
+    {
+      "stepNumber": 2,
+      "text": "Press and hold on the photo for about one second.",
+      "image": "",
+      "tts": "Press and hold on the photo for about one second."
+    },
+    {
+      "stepNumber": 3,
+      "text": "When a menu appears, tap \"Save image\" or \"Download.\"",
+      "image": "",
+      "tts": "When a menu appears, tap Save image or Download."
+    },
+    {
+      "stepNumber": 4,
+      "text": "The photo is now in your Photos or Gallery app.",
+      "image": "",
+      "tts": "The photo is now in your Photos or Gallery app."
+    }
+  ]
+}

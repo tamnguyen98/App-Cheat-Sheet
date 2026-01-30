@@ -1,0 +1,41 @@
+{
+  "id": "zoom-join-android-es",
+  "title": "Unirse a una reunión de Zoom en Android",
+  "version": 1,
+  "lastUpdated": "2025-01-15",
+  "deviceFamily": ["android-generic"],
+  "language": "es",
+  "category": "Video Calls",
+  "steps": [
+    {
+      "stepNumber": 1,
+      "text": "Abre la aplicación Zoom. Si no la tienes, descárgala primero desde Play Store.",
+      "image": "",
+      "tts": "Abre la aplicación Zoom. Si no la tienes, descárgala primero desde Play Store."
+    },
+    {
+      "stepNumber": 2,
+      "text": "Toca \"Unirse a una reunión\" en la pantalla principal.",
+      "image": "",
+      "tts": "Toca Unirse a una reunión en la pantalla principal."
+    },
+    {
+      "stepNumber": 3,
+      "text": "Introduce el ID de la reunión que te compartieron. Suele ser un número de 9 o 10 dígitos.",
+      "image": "",
+      "tts": "Introduce el ID de la reunión que te compartieron. Suele ser un número de nueve o diez dígitos."
+    },
+    {
+      "stepNumber": 4,
+      "text": "Toca \"Unirse\". Si te pide tu nombre, escríbelo y toca Aceptar.",
+      "image": "",
+      "tts": "Toca Unirse. Si te pide tu nombre, escríbelo y toca Aceptar."
+    },
+    {
+      "stepNumber": 5,
+      "text": "Si pide código de acceso, introduce el de tu invitación y toca Aceptar. ¡Listo!",
+      "image": "",
+      "tts": "Si pide código de acceso, introduce el de tu invitación y toca Aceptar. ¡Listo!"
+    }
+  ]
+}

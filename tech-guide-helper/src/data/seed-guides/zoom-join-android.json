@@ -1,0 +1,41 @@
+{
+  "id": "zoom-join-android",
+  "title": "Join a Zoom meeting on Android",
+  "version": 1,
+  "lastUpdated": "2025-01-15",
+  "deviceFamily": ["android-generic"],
+  "language": "en",
+  "category": "Video Calls",
+  "steps": [
+    {
+      "stepNumber": 1,
+      "text": "Open the Zoom app. If you don't have it, download it from the Play Store first.",
+      "image": "",
+      "tts": "Open the Zoom app. If you don't have it, download it from the Play Store first."
+    },
+    {
+      "stepNumber": 2,
+      "text": "Tap \"Join a Meeting\" on the main screen.",
+      "image": "",
+      "tts": "Tap Join a Meeting on the main screen."
+    },
+    {
+      "stepNumber": 3,
+      "text": "Enter the meeting ID that was shared with you. It's usually a 9- or 10-digit number.",
+      "image": "",
+      "tts": "Enter the meeting ID that was shared with you. It's usually a nine or ten digit number."
+    },
+    {
+      "stepNumber": 4,
+      "text": "Tap \"Join.\" You may be asked to type your name — enter it and tap OK.",
+      "image": "",
+      "tts": "Tap Join. You may be asked to type your name. Enter it and tap OK."
+    },
+    {
+      "stepNumber": 5,
+      "text": "If asked for a passcode, enter the one from your invite and tap OK. You're in!",
+      "image": "",
+      "tts": "If asked for a passcode, enter the one from your invite and tap OK. You're in!"
+    }
+  ]
+}

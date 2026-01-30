@@ -1,0 +1,75 @@
+# Cursor Rules for Tech Guide Helper App (React Native)
+
+## General Project Rules
+- This is a senior-focused, accessibility-first quick-reference app for tech guides (Zoom setup etc.).
+- Target users: 55+, low digital literacy → ruthless simplicity, large targets, high contrast, TTS everywhere.
+- Platform: React Native (Expo preferred) → mobile (Android first) + web/PWA.
+- Monetization: Freemium (3 guides/day free + ads; one-time $4.99–$9.99 for ad-remove + 4–5 guides; sub $2.99/mo unlimited + perks).
+- Login: Optional Firebase Auth.
+- Offline: LRU cache + preload popular guides + manual download.
+- Languages: Multi-lang support (start English + Spanish).
+- Accessibility: WCAG 2.2 AA minimum (aim AAA); always set accessibilityLabel, Role, Hint on interactive components.
+
+## Code Style & Patterns
+- Use functional components + hooks.
+- Prefer TypeScript.
+- Use large, clear component names (e.g., GuideStepCard, LargeSearchBar).
+- Every button/touchable: accessibilityLabel + accessibilityRole="button" + accessibilityHint.
+- Text: minimum 18pt, scalable, high-contrast.
+- Colors: Light theme default (soft white/off-white bg, dark text); accent color calm blue/green.
+- Navigation: React Navigation bottom tabs (Home, Library, Favorites, Settings).
+- State management: Zustand or Context for simple global state (limits, language, offline status).
+- Offline caching: Implement LRU (lru-cache lib or custom) on top of expo-file-system / MMKV.
+
+## Accessibility Must-Dos
+- Every screen: Test with TalkBack/VoiceOver.
+- TTS: Use expo-speech for guide narration; auto-play option in settings.
+- No icons-only buttons — always label + a11y props.
+- Dynamic font scaling support (no fixed sizes).
+- Large touch targets (min 48x48dp, padding generous).
+
+## Never Do
+- Small fonts, low contrast, tiny buttons.
+- Intrusive ads or pop-ups mid-guide.
+- Jargon in UI text.
+- Force login on first open.
+- Complex animations on load.
+- Overload home screen — keep minimalist.
+
+## When in Doubt
+- Ask: "Would a 75-year-old with shaky hands and poor eyesight use this comfortably in <10 seconds?"
+- Prioritize simplicity over features.
+- Check WCAG quick reference if adding new UI.
+
+# Updated Rules – Critical Additions
+
+## Content & Freshness
+- NEVER hardcode guide content inside components, screens, or logic files (no raw strings like "Tap the green button").
+- OK to bundle small initial/seed guides as external JSON files in /assets/guides/initial/ or /src/data/seed-guides/.
+- Use Expo assetBundlePatterns to include them.
+- On first launch: Import seed JSON into local storage/cache if empty.
+- Treat seed guides identically to CMS-fetched ones (versioned, updatable, tagged with device/language).
+- Seed set must be tiny (5-10 guides max) and structured to match future CMS schema.
+- Goal: Immediate offline value on install, zero tech debt when switching to full CMS.
+- Plan CMS early: Use Firestore collections + simple admin; aim for Sanity/Payload later.
+
+## Device-Specific
+- Tag guides: android-generic, ios-iphone, etc.
+- Fetch: exact device → generic OS → fallback.
+- Show mismatch label in offline mode.
+
+## PWA-First
+- Build as PWA with Expo web support.
+- Include manifest.json, service worker for offline.
+- Prompt "Add to Home Screen" after first successful guide.
+- Family-link friendly: One URL share.
+
+## Safety UX
+- EVERY screen MUST have large persistent HOME button ("HOME" / "START OVER").
+- Prominent, fixed position, different color.
+- First screens: "Tap HOME if lost — nothing breaks."
+
+## When in Doubt
+- Prioritize: Fresh content > features.
+- Ask: Can family share a link and have it work instantly?
+- Test: Does a 75-year-old feel safe and not stuck?
