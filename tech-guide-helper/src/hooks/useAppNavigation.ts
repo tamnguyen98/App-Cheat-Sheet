@@ -48,6 +48,7 @@ export function useAppNavigation() {
   function goToGuide(guideId: string): void {
     const root = navRef?.current;
     if (!root?.isReady()) return;
+    console.log('Navigating to guide:', guideId);
     root.navigate('GuideDetail', { guideId });
   }
 

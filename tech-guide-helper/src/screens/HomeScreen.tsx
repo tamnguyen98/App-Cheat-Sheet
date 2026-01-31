@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { LargeSearchBar } from '../components/LargeSearchBar';
-import { HomeButton } from '../components/HomeButton';
 import { loadAllGuides } from '../services/storage';
 import { Guide } from '../types/guide';
 import { useAppStore } from '../store/useAppStore';
@@ -75,12 +74,6 @@ export function HomeScreen() {
         contentContainerStyle={styles.content}
         accessibilityLabel="Home screen"
       >
-        {/* <View style={styles.homeButtonRow}>
-          <HomeButton
-            accessibilityLabel={t('home.homeButton')}
-            accessibilityHint={t('home.homeHint')}
-          />
-        </View> */}
 
         <Text style={styles.headline} allowFontScaling>
           {t('home.headline')}

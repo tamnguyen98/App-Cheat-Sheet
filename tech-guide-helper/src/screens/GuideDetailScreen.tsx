@@ -3,14 +3,14 @@
  * Persistent HOME button. WCAG AA+, large touch targets.
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
   ScrollView,
   Pressable,
   StyleSheet,
-  Dimensions,
+  Image,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import * as Speech from 'expo-speech';
@@ -22,6 +22,7 @@ import { useAppStore } from '../store/useAppStore';
 import { useAppNavigation } from '../hooks/useAppNavigation';
 import type { GuideDetailRouteProp } from '../navigation/types';
 import { ScreenWrapper } from '../components/ScreenWrapper';
+import { ASSET_MAP } from '../services/seedImport';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -41,15 +42,22 @@ export function GuideDetailScreen() {
   const favorites = useAppStore((s) => s.favorites);
   const incrementGuidesViewedToday = useAppStore((s) => s.incrementGuidesViewedToday);
 
+  
   useEffect(() => {
     if (!guideId) return;
     loadGuide(guideId).then(setGuide);
   }, [guideId]);
-
+  
   useEffect(() => {
     if (!guideId) return;
     incrementGuidesViewedToday();
   }, [guideId, incrementGuidesViewedToday]);
+  
+  const scrollRef = useRef<ScrollView>(null);
+  useEffect(() => {
+    // Whenever the step index changes, scroll to the top immediately
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  }, [currentStepIndex]); // This dependency ensures it runs on every step change
 
   const speakStep = useCallback(
     (step: GuideStep) => {
@@ -98,9 +106,6 @@ export function GuideDetailScreen() {
   return (
     <ScreenWrapper padding={10}>
       <View style={styles.container}>
-        {/* <View style={styles.homeRow}>
-          <HomeButton />
-        </View> */}
 
         <Text style={styles.title} allowFontScaling>
           {guide.title}
@@ -115,26 +120,41 @@ export function GuideDetailScreen() {
         </Text>
 
         {currentStep && (
-          <ScrollView
-            style={styles.stepScroll}
-            contentContainerStyle={styles.stepContent}
-            accessibilityLabel={`Step ${currentStepIndex + 1} of ${steps.length}`}
-          >
-            <Text style={styles.stepText} allowFontScaling>
-              {currentStep.text}
-            </Text>
-            <Pressable
-              onPress={() => speakStep(currentStep)}
-              style={({ pressed }) => [styles.ttsButton, pressed && styles.pressed]}
-              accessibilityLabel={speaking ? t('guide.pauseTts') : t('guide.playTts')}
-              accessibilityRole="button"
-              accessibilityHint="Hear this step read aloud"
-            >
-              <Text style={styles.ttsLabel}>{speaking ? '⏸' : '▶'} Read aloud</Text>
-            </Pressable>
-          </ScrollView>
-        )}
+  <ScrollView
+    ref={scrollRef}
+    style={styles.stepScroll}
+    contentContainerStyle={styles.stepContent}
+    accessibilityLabel={`Step ${currentStepIndex + 1} of ${steps.length}`}
+  >
 
+    <Text style={styles.stepText} allowFontScaling>
+      {currentStep.text}
+    </Text>
+
+    <Pressable
+      onPress={() => speakStep(currentStep)}
+      style={({ pressed }) => [styles.ttsButton, pressed && styles.pressed]}
+      accessibilityLabel={speaking ? t('guide.pauseTts') : t('guide.playTts')}
+      accessibilityRole="button"
+      accessibilityHint="Hear this step read aloud"
+      >
+      <Text style={styles.ttsLabel}>{speaking ? '⏸' : '▶'} Read aloud</Text>
+    </Pressable>
+    {/* 1. The Image & HUD Section */}
+    {currentStep.image && (
+      <View style={styles.imageContainer}>
+        <Image 
+          // Change from {{ uri: currentStep.image }} to this:
+          source={ASSET_MAP[currentStep.image]}
+          style={styles.stepImage}
+          resizeMode="contain"
+        />
+      </View>
+    )}
+  </ScrollView>
+)}
+
+        {/* <Text>v.{guide.version}</Text> */}
         <View style={styles.navRow}>
           <Pressable
             onPress={() => setCurrentStepIndex((i) => Math.max(0, i - 1))}
@@ -240,6 +260,21 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     color: '#111',
     marginBottom: 20,
+  },
+  imageContainer: {
+    width: '100%',
+    // maxWidth: 600, // Optional: prevents screenshots from becoming massive on web
+    alignSelf: 'center', // Centers the guide on larger tablet/web screens
+    backgroundColor: 'transparent',
+    borderRadius: 12,
+    marginBottom: 20,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  stepImage: {
+    width: '100%',
+    height: undefined, 
+    aspectRatio: 1, 
   },
   ttsButton: {
     minHeight: MIN_TOUCH_DP,

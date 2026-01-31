@@ -1,7 +1,7 @@
 {
   "id": "zoom-join-android",
   "title": "Join a Zoom meeting on Android",
-  "version": 1,
+  "version": 3,
   "lastUpdated": "2025-01-15",
   "deviceFamily": ["android-generic"],
   "language": "en",
@@ -9,33 +9,45 @@
   "steps": [
     {
       "stepNumber": 1,
-      "text": "Open the Zoom app. If you don't have it, download it from the Play Store first.",
-      "image": "",
-      "tts": "Open the Zoom app. If you don't have it, download it from the Play Store first."
+      "text": "Open the Zoom app. Get it from the App Store if you haven't already.",
+      "image": "assets/guides/zoom/mobile/icon.webp",
+      "tts": "Open the Zoom app. Get it from the App Store if you haven't already."
     },
     {
       "stepNumber": 2,
-      "text": "Tap \"Join a Meeting\" on the main screen.",
-      "image": "",
-      "tts": "Tap Join a Meeting on the main screen."
+      "text": "Tap \"Join a Meeting\" at the bottom of the first screen.",
+      "image": "assets/guides/zoom/mobile/zoom-landing-page.png",
+      "tts": "Tap Join a Meeting on the first screen."
     },
     {
       "stepNumber": 3,
-      "text": "Enter the meeting ID that was shared with you. It's usually a 9- or 10-digit number.",
-      "image": "",
-      "tts": "Enter the meeting ID that was shared with you. It's usually a nine or ten digit number."
+      "text": "Type the meeting ID from your invite (9 or 10 digits).",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-info-input-page-meeting-id.png",
+      "tts": "Type the meeting ID from your invite. It's nine or ten digits."
     },
     {
       "stepNumber": 4,
-      "text": "Tap \"Join.\" You may be asked to type your name — enter it and tap OK.",
-      "image": "",
-      "tts": "Tap Join. You may be asked to type your name. Enter it and tap OK."
+      "text": "Enter your display name in the box below the meeting ID.",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-info-input-page-name.png",
+      "tts": "Enter your display name in the box below the meeting ID."
     },
     {
       "stepNumber": 5,
-      "text": "If asked for a passcode, enter the one from your invite and tap OK. You're in!",
+      "text": "When you're ready, tap \"Join.\"",
       "image": "",
-      "tts": "If asked for a passcode, enter the one from your invite and tap OK. You're in!"
+      "tts": "Tap Join."
+    },
+    {
+      "stepNumber": 6,
+      "text": "Enter the meeting passcode if you see a box for it. You're now in the meeting.",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-passcode-input.png",
+      "tts": "Enter the meeting passcode if you see a box for it. You're now in the meeting."
+    },
+    {
+      "stepNumber": 7,
+      "text": "You can disable your microphone or camera before entering by toggling the respective icons. Then tap \"Join Meeting.\"",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-finalize-page.png",
+      "tts": "You can disable your microphone or camera before entering by toggling the respective icons. Then tap Join Meeting."
     }
   ]
 }
