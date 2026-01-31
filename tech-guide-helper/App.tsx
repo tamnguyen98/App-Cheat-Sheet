@@ -11,8 +11,10 @@ import { PaperProvider } from 'react-native-paper';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { NavigationRefProvider } from './src/context/NavigationRefContext';
 import { bootstrap } from './src/bootstrap';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import type { RootNavigationRef } from './src/navigation/types';
 import './src/i18n';
+import { ScreenWrapper } from './src/components/ScreenWrapper';
 
 const MIN_FONT_SIZE = 18;
 
@@ -29,36 +31,43 @@ export default function App() {
 
   if (error) {
     return (
-      <View style={styles.center}>
-        <Text style={styles.error} allowFontScaling>
-          Something went wrong. Please restart the app.
-        </Text>
-        <StatusBar style="auto" />
-      </View>
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.center}>
+          <Text style={styles.error} allowFontScaling>
+            Something went wrong. Please restart the app.
+          </Text>
+          <StatusBar style="auto" />
+        </SafeAreaView>
+        
+      </SafeAreaProvider>
     );
   }
 
   if (!ready) {
     return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color="#2d7a5e" />
-        <Text style={styles.loading} allowFontScaling>
-          Loading…
-        </Text>
-        <StatusBar style="auto" />
-      </View>
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.center}>
+          <ActivityIndicator size="large" color="#2d7a5e" />
+          <Text style={styles.loading} allowFontScaling>
+            Loading…
+          </Text>
+          <StatusBar style="auto" />
+        </SafeAreaView>
+      </SafeAreaProvider>
     );
   }
 
   return (
-    <PaperProvider>
-      <NavigationContainer ref={rootNavRef}>
-        <NavigationRefProvider navigationRef={rootNavRef}>
-          <RootNavigator />
-          <StatusBar style="auto" />
-        </NavigationRefProvider>
-      </NavigationContainer>
-    </PaperProvider>
+    <SafeAreaProvider>
+        <PaperProvider>
+          <NavigationContainer ref={rootNavRef}>
+            <NavigationRefProvider navigationRef={rootNavRef}>
+              <RootNavigator />
+              <StatusBar style="auto" />
+            </NavigationRefProvider>
+          </NavigationContainer>
+        </PaperProvider>
+    </SafeAreaProvider>
   );
 }
 

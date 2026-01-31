@@ -8,6 +8,7 @@ import { View, Text, ScrollView, Pressable, Switch, StyleSheet } from 'react-nat
 import { useTranslation } from 'react-i18next';
 import { HomeButton } from '../components/HomeButton';
 import { useAppStore } from '../store/useAppStore';
+import { ScreenWrapper } from '../components/ScreenWrapper';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -27,85 +28,87 @@ export function SettingsScreen() {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      accessibilityLabel={t('settings.title')}
-    >
-      <View style={styles.homeRow}>
-        <HomeButton
-          accessibilityLabel={t('settings.homeButton')}
-          accessibilityHint={t('settings.homeHint')}
-        />
-      </View>
-      <Text style={styles.title} allowFontScaling>
-        {t('settings.title')}
-      </Text>
-
-      <View style={styles.section}>
-        <Text style={styles.label} allowFontScaling>
-          {t('settings.language')}
+    <ScreenWrapper padding={10}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        accessibilityLabel={t('settings.title')}
+      >
+        {/* <View style={styles.homeRow}>
+          <HomeButton
+            accessibilityLabel={t('settings.homeButton')}
+            accessibilityHint={t('settings.homeHint')}
+          />
+        </View> */}
+        <Text style={styles.title} allowFontScaling>
+          {t('settings.title')}
         </Text>
-        <View style={styles.row}>
-          <Pressable
-            onPress={() => setLang('en')}
-            style={[
-              styles.langButton,
-              language === 'en' && styles.langActive,
-            ]}
-            accessibilityLabel="English"
-            accessibilityRole="button"
-            accessibilityState={{ selected: language === 'en' }}
-          >
-            <Text style={[styles.langText, language === 'en' && styles.langTextActive]}>English</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => setLang('es')}
-            style={[
-              styles.langButton,
-              language === 'es' && styles.langActive,
-            ]}
-            accessibilityLabel="Spanish"
-            accessibilityRole="button"
-            accessibilityState={{ selected: language === 'es' }}
-          >
-            <Text style={[styles.langText, language === 'es' && styles.langTextActive]}>Español</Text>
-          </Pressable>
-        </View>
-      </View>
 
-      <View style={styles.section}>
-        <View style={styles.switchRow}>
+        <View style={styles.section}>
           <Text style={styles.label} allowFontScaling>
-            {t('settings.ttsAutoPlay')}
+            {t('settings.language')}
           </Text>
-          <Switch
-            value={ttsAutoPlay}
-            onValueChange={setTtsAutoPlay}
-            accessibilityLabel={t('settings.ttsAutoPlay')}
-            accessibilityRole="switch"
-          />
+          <View style={styles.row}>
+            <Pressable
+              onPress={() => setLang('en')}
+              style={[
+                styles.langButton,
+                language === 'en' && styles.langActive,
+              ]}
+              accessibilityLabel="English"
+              accessibilityRole="button"
+              accessibilityState={{ selected: language === 'en' }}
+            >
+              <Text style={[styles.langText, language === 'en' && styles.langTextActive]}>English</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => setLang('es')}
+              style={[
+                styles.langButton,
+                language === 'es' && styles.langActive,
+              ]}
+              accessibilityLabel="Spanish"
+              accessibilityRole="button"
+              accessibilityState={{ selected: language === 'es' }}
+            >
+              <Text style={[styles.langText, language === 'es' && styles.langTextActive]}>Español</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.section}>
-        <View style={styles.switchRow}>
-          <Text style={styles.label} allowFontScaling>
-            {t('settings.highContrast')}
-          </Text>
-          <Switch
-            value={highContrast}
-            onValueChange={setHighContrast}
-            accessibilityLabel={t('settings.highContrast')}
-            accessibilityRole="switch"
-          />
+        <View style={styles.section}>
+          <View style={styles.switchRow}>
+            <Text style={styles.label} allowFontScaling>
+              {t('settings.ttsAutoPlay')}
+            </Text>
+            <Switch
+              value={ttsAutoPlay}
+              onValueChange={setTtsAutoPlay}
+              accessibilityLabel={t('settings.ttsAutoPlay')}
+              accessibilityRole="switch"
+            />
+          </View>
         </View>
-      </View>
 
-      <Text style={styles.about} allowFontScaling>
-        {t('settings.about')}
-      </Text>
-    </ScrollView>
+        <View style={styles.section}>
+          <View style={styles.switchRow}>
+            <Text style={styles.label} allowFontScaling>
+              {t('settings.highContrast')}
+            </Text>
+            <Switch
+              value={highContrast}
+              onValueChange={setHighContrast}
+              accessibilityLabel={t('settings.highContrast')}
+              accessibilityRole="switch"
+            />
+          </View>
+        </View>
+
+        <Text style={styles.about} allowFontScaling>
+          {t('settings.about')}
+        </Text>
+      </ScrollView>
+    </ScreenWrapper>
   );
 }
 

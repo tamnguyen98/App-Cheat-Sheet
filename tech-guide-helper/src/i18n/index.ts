@@ -7,7 +7,7 @@ import { initReactI18next } from 'react-i18next';
 
 const en = {
   search: {
-    title: 'Tech Guide Helper',
+    title: 'App Cheat Sheet',
     placeholder: 'Search guides…',
     searchHint: 'Type to find a guide',
     topInquiries: 'Top inquiries',
@@ -52,7 +52,7 @@ const en = {
     language: 'Language',
     ttsAutoPlay: 'Read steps aloud automatically',
     highContrast: 'High contrast',
-    about: 'About Tech Guide Helper',
+    about: 'About App Cheat Sheet',
     homeButton: 'HOME',
     homeHint: 'Tap to go back to the start.',
   },
@@ -60,7 +60,7 @@ const en = {
 
 const es: typeof en = {
   search: {
-    title: 'Tech Guide Helper',
+    title: 'App Cheat Sheet',
     placeholder: 'Buscar guías…',
     searchHint: 'Escribe para encontrar una guía',
     topInquiries: 'Consultas frecuentes',
@@ -105,7 +105,7 @@ const es: typeof en = {
     language: 'Idioma',
     ttsAutoPlay: 'Leer pasos en voz alta automáticamente',
     highContrast: 'Alto contraste',
-    about: 'Acerca de Tech Guide Helper',
+    about: 'Acerca de App Cheat Sheet',
     homeButton: 'INICIO',
     homeHint: 'Toca para volver al inicio.',
   },

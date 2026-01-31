@@ -17,6 +17,7 @@ import { HomeButton } from '../components/HomeButton';
 import { loadAllGuides } from '../services/storage';
 import { Guide } from '../types/guide';
 import { useAppNavigation } from '../hooks/useAppNavigation';
+import { ScreenWrapper } from '../components/ScreenWrapper';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -62,89 +63,91 @@ export function SearchScreen() {
         );
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      accessibilityLabel={t('search.landingLabel')}
-    >
-      <View style={styles.homeRow}>
-        <HomeButton
-          accessibilityLabel={t('search.browseAll')}
-          accessibilityHint={t('search.browseAllHint')}
-        />
-      </View>
+    <ScreenWrapper padding={10}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        accessibilityLabel={t('search.landingLabel')}
+      >
+        {/* <View style={styles.homeRow}>
+          <HomeButton
+            accessibilityLabel={t('search.browseAll')}
+            accessibilityHint={t('search.browseAllHint')}
+          />
+        </View> */}
 
-      <Text style={styles.title} allowFontScaling>
-        {t('search.title')}
-      </Text>
+        <Text style={styles.title} allowFontScaling>
+          {t('search.title')}
+        </Text>
 
-      <View style={styles.searchRow}>
-        <LargeSearchBar
-          value={query}
-          onChangeText={setQuery}
-          onSubmit={() => {
-            if (filtered.length === 1) goToGuide(filtered[0].id);
-          }}
-          placeholder={t('search.placeholder')}
-          accessibilityLabel={t('search.placeholder')}
-          accessibilityHint={t('search.searchHint')}
-        />
-      </View>
+        <View style={styles.searchRow}>
+          <LargeSearchBar
+            value={query}
+            onChangeText={setQuery}
+            onSubmit={() => {
+              if (filtered.length === 1) goToGuide(filtered[0].id);
+            }}
+            placeholder={t('search.placeholder')}
+            accessibilityLabel={t('search.placeholder')}
+            accessibilityHint={t('search.searchHint')}
+          />
+        </View>
 
-      <Text style={styles.suggestionsTitle} allowFontScaling>
-        {t('search.topInquiries')}
-      </Text>
-      <View style={styles.suggestions}>
-        {suggestions.map((g) => (
-          <Pressable
-            key={g.id}
-            onPress={() => goToGuide(g.id)}
-            style={({ pressed }) => [styles.chip, pressed && styles.pressed]}
-            accessibilityLabel={g.title}
-            accessibilityRole="button"
-            accessibilityHint={t('search.openGuideHint')}
-          >
-            <Text style={styles.chipText} allowFontScaling>
-              {g.title}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
-
-      {filtered.length > 0 && (
-        <View style={styles.results}>
-          <Text style={styles.resultsTitle} allowFontScaling>
-            {t('search.results')}
-          </Text>
-          {filtered.slice(0, 10).map((g) => (
+        <Text style={styles.suggestionsTitle} allowFontScaling>
+          {t('search.topInquiries')}
+        </Text>
+        <View style={styles.suggestions}>
+          {suggestions.map((g) => (
             <Pressable
               key={g.id}
               onPress={() => goToGuide(g.id)}
-              style={({ pressed }) => [styles.resultRow, pressed && styles.pressed]}
+              style={({ pressed }) => [styles.chip, pressed && styles.pressed]}
               accessibilityLabel={g.title}
               accessibilityRole="button"
               accessibilityHint={t('search.openGuideHint')}
             >
-              <Text style={styles.resultText} allowFontScaling>
+              <Text style={styles.chipText} allowFontScaling>
                 {g.title}
               </Text>
             </Pressable>
           ))}
         </View>
-      )}
 
-      <Pressable
-        onPress={goToHome}
-        style={({ pressed }) => [styles.browseButton, pressed && styles.pressed]}
-        accessibilityLabel={t('search.browseAll')}
-        accessibilityRole="button"
-        accessibilityHint={t('search.browseAllHint')}
-      >
-        <Text style={styles.browseText} allowFontScaling>
-          {t('search.browseAll')}
-        </Text>
-      </Pressable>
-    </ScrollView>
+        {filtered.length > 0 && (
+          <View style={styles.results}>
+            <Text style={styles.resultsTitle} allowFontScaling>
+              {t('search.results')}
+            </Text>
+            {filtered.slice(0, 10).map((g) => (
+              <Pressable
+                key={g.id}
+                onPress={() => goToGuide(g.id)}
+                style={({ pressed }) => [styles.resultRow, pressed && styles.pressed]}
+                accessibilityLabel={g.title}
+                accessibilityRole="button"
+                accessibilityHint={t('search.openGuideHint')}
+              >
+                <Text style={styles.resultText} allowFontScaling>
+                  {g.title}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        )}
+
+        <Pressable
+          onPress={goToHome}
+          style={({ pressed }) => [styles.browseButton, pressed && styles.pressed]}
+          accessibilityLabel={t('search.browseAll')}
+          accessibilityRole="button"
+          accessibilityHint={t('search.browseAllHint')}
+        >
+          <Text style={styles.browseText} allowFontScaling>
+            {t('search.browseAll')}
+          </Text>
+        </Pressable>
+      </ScrollView>
+    </ScreenWrapper>
   );
 }
 

@@ -1,4 +1,4 @@
-# Tech Guide Helper
+# App Cheat Sheet
 
 A minimalist, visual quick-reference PWA/mobile app for tech-illiterate users (especially seniors), providing step-by-step guides for everyday tech tasks (e.g. Zoom setup, email, phone basics).
 
@@ -12,7 +12,7 @@ A minimalist, visual quick-reference PWA/mobile app for tech-illiterate users (e
 ## Project structure
 
 ```
-tech-guide-helper/
+app-cheat-sheet/
 ├── App.tsx                          # Root: bootstrap, Paper, NavigationContainer + ref, NavigationRefProvider
 ├── app.json                         # PWA web config (manifest, themeColor, standalone)
 ├── index.ts                         # Entry (registerRootComponent)

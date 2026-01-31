@@ -7,7 +7,7 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { LRUCache } from 'lru-cache';
 import { Guide } from '../types/guide';
 
-const CACHE_DIR = `${FileSystem.documentDirectory ?? ''}tech-guide-helper/`;
+const CACHE_DIR = `${FileSystem.documentDirectory ?? ''}app-cheat-sheet/`;
 const GUIDES_DIR = `${CACHE_DIR}guides/`;
 const META_FILE = `${CACHE_DIR}meta.json`;
 const SEED_IMPORTED_KEY = 'seedImported';

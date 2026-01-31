@@ -19,6 +19,7 @@ import { loadAllGuides } from '../services/storage';
 import { Guide } from '../types/guide';
 import { useAppStore } from '../store/useAppStore';
 import { useAppNavigation } from '../hooks/useAppNavigation';
+import { ScreenWrapper } from '../components/ScreenWrapper';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -68,69 +69,71 @@ export function HomeScreen() {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      accessibilityLabel="Home screen"
-    >
-      <View style={styles.homeButtonRow}>
-        <HomeButton
-          accessibilityLabel={t('home.homeButton')}
-          accessibilityHint={t('home.homeHint')}
-        />
-      </View>
+    <ScreenWrapper padding={10}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        accessibilityLabel="Home screen"
+      >
+        {/* <View style={styles.homeButtonRow}>
+          <HomeButton
+            accessibilityLabel={t('home.homeButton')}
+            accessibilityHint={t('home.homeHint')}
+          />
+        </View> */}
 
-      <Text style={styles.headline} allowFontScaling>
-        {t('home.headline')}
-      </Text>
+        <Text style={styles.headline} allowFontScaling>
+          {t('home.headline')}
+        </Text>
 
-      <View style={styles.searchRow}>
-        <LargeSearchBar
-          value={search}
-          onChangeText={setSearch}
-          onSubmit={() => {}}
-        />
-      </View>
+        <View style={styles.searchRow}>
+          <LargeSearchBar
+            value={search}
+            onChangeText={setSearch}
+            onSubmit={() => {}}
+          />
+        </View>
 
-      <Text style={styles.categoriesTitle} allowFontScaling>
-        {t('home.categories')}
-      </Text>
-      <View style={styles.categories}>
-        {CATEGORIES.map((cat) => (
-          <Pressable
-            key={cat.key}
-            onPress={() => filterByCategory(cat.key)}
-            style={({ pressed }) => [styles.categoryButton, pressed && styles.pressed]}
-            accessibilityLabel={t(cat.i18nKey)}
-            accessibilityRole="button"
-            accessibilityHint={`Show guides in ${cat.key}`}
-          >
-            <Text style={styles.categoryText} allowFontScaling>
-              {t(cat.i18nKey)}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
-
-      {filtered.length > 0 && (
-        <View style={styles.results}>
-          {filtered.slice(0, 20).map((g) => (
+        <Text style={styles.categoriesTitle} allowFontScaling>
+          {t('home.categories')}
+        </Text>
+        <View style={styles.categories}>
+          {CATEGORIES.map((cat) => (
             <Pressable
-              key={g.id}
-              onPress={() => openGuide(g)}
-              style={({ pressed }) => [styles.guideRow, pressed && styles.pressed]}
-              accessibilityLabel={g.title}
+              key={cat.key}
+              onPress={() => filterByCategory(cat.key)}
+              style={({ pressed }) => [styles.categoryButton, pressed && styles.pressed]}
+              accessibilityLabel={t(cat.i18nKey)}
               accessibilityRole="button"
-              accessibilityHint="Open this guide"
+              accessibilityHint={`Show guides in ${cat.key}`}
             >
-              <Text style={styles.guideTitle} allowFontScaling>
-                {g.title}
+              <Text style={styles.categoryText} allowFontScaling>
+                {t(cat.i18nKey)}
               </Text>
             </Pressable>
           ))}
         </View>
-      )}
-    </ScrollView>
+
+        {filtered.length > 0 && (
+          <View style={styles.results}>
+            {filtered.slice(0, 20).map((g) => (
+              <Pressable
+                key={g.id}
+                onPress={() => openGuide(g)}
+                style={({ pressed }) => [styles.guideRow, pressed && styles.pressed]}
+                accessibilityLabel={g.title}
+                accessibilityRole="button"
+                accessibilityHint="Open this guide"
+              >
+                <Text style={styles.guideTitle} allowFontScaling>
+                  {g.title}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        )}
+      </ScrollView>
+    </ScreenWrapper>
   );
 }
 

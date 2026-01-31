@@ -21,6 +21,7 @@ import { Guide, GuideStep } from '../types/guide';
 import { useAppStore } from '../store/useAppStore';
 import { useAppNavigation } from '../hooks/useAppNavigation';
 import type { GuideDetailRouteProp } from '../navigation/types';
+import { ScreenWrapper } from '../components/ScreenWrapper';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -80,10 +81,12 @@ export function GuideDetailScreen() {
 
   if (!guide) {
     return (
-      <View style={styles.container}>
-        <HomeButton />
-        <Text style={styles.loading}>Loading…</Text>
-      </View>
+      <ScreenWrapper padding={10}>
+        <View style={styles.container}>
+          <HomeButton />
+          <Text style={styles.loading}>Loading…</Text>
+        </View>
+      </ScreenWrapper>
     );
   }
 
@@ -93,96 +96,99 @@ export function GuideDetailScreen() {
   const isFavorite = favorites.includes(guide.id);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.homeRow}>
+    <ScreenWrapper padding={10}>
+      <View style={styles.container}>
+        {/* <View style={styles.homeRow}>
+          <HomeButton />
+        </View> */}
+
+        <Text style={styles.title} allowFontScaling>
+          {guide.title}
+        </Text>
+
+        <View style={styles.progressBar}>
+          <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
+        </View>
+
+        <Text style={styles.stepLabel} allowFontScaling>
+          {t('guide.step', { number: currentStepIndex + 1 })} of {steps.length}
+        </Text>
+
+        {currentStep && (
+          <ScrollView
+            style={styles.stepScroll}
+            contentContainerStyle={styles.stepContent}
+            accessibilityLabel={`Step ${currentStepIndex + 1} of ${steps.length}`}
+          >
+            <Text style={styles.stepText} allowFontScaling>
+              {currentStep.text}
+            </Text>
+            <Pressable
+              onPress={() => speakStep(currentStep)}
+              style={({ pressed }) => [styles.ttsButton, pressed && styles.pressed]}
+              accessibilityLabel={speaking ? t('guide.pauseTts') : t('guide.playTts')}
+              accessibilityRole="button"
+              accessibilityHint="Hear this step read aloud"
+            >
+              <Text style={styles.ttsLabel}>{speaking ? '⏸' : '▶'} Read aloud</Text>
+            </Pressable>
+          </ScrollView>
+        )}
+
+        <View style={styles.navRow}>
+          <Pressable
+            onPress={() => setCurrentStepIndex((i) => Math.max(0, i - 1))}
+            disabled={currentStepIndex === 0}
+            style={({ pressed }) => [
+              styles.navButton,
+              currentStepIndex === 0 && styles.navDisabled,
+              pressed && styles.pressed,
+            ]}
+            accessibilityLabel={t('guide.previous')}
+            accessibilityRole="button"
+            accessibilityState={{ disabled: currentStepIndex === 0 }}
+          >
+            <Text style={styles.navText} allowFontScaling>
+              {t('guide.previous')}
+            </Text>
+          </Pressable>
+          {currentStepIndex < steps.length - 1 ? (
+            <Pressable
+              onPress={() => setCurrentStepIndex((i) => i + 1)}
+              style={({ pressed }) => [styles.navButton, styles.next, pressed && styles.pressed]}
+              accessibilityLabel={t('guide.next')}
+              accessibilityRole="button"
+            >
+              <Text style={styles.navText} allowFontScaling>
+                {t('guide.next')}
+              </Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              onPress={resetToHome}
+              style={({ pressed }) => [styles.navButton, styles.done, pressed && styles.pressed]}
+              accessibilityLabel={t('guide.done')}
+              accessibilityRole="button"
+              accessibilityHint="Finish and return to home"
+            >
+              <Text style={styles.navText} allowFontScaling>
+                {t('guide.done')}
+              </Text>
+            </Pressable>
+          )}
+        </View>
+
+        <Pressable
+          onPress={() => (isFavorite ? removeFavorite(guide.id) : addFavorite(guide.id))}
+          style={({ pressed }) => [styles.favButton, pressed && styles.pressed]}
+          accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+          accessibilityRole="button"
+        >
+          <Text style={styles.favText}>{isFavorite ? '❤️' : '🤍'} Favorites</Text>
+        </Pressable>
         <HomeButton />
       </View>
-
-      <Text style={styles.title} allowFontScaling>
-        {guide.title}
-      </Text>
-
-      <View style={styles.progressBar}>
-        <View style={[styles.progressFill, { width: `${progress * 100}%` }]} />
-      </View>
-
-      <Text style={styles.stepLabel} allowFontScaling>
-        {t('guide.step', { number: currentStepIndex + 1 })} of {steps.length}
-      </Text>
-
-      {currentStep && (
-        <ScrollView
-          style={styles.stepScroll}
-          contentContainerStyle={styles.stepContent}
-          accessibilityLabel={`Step ${currentStepIndex + 1} of ${steps.length}`}
-        >
-          <Text style={styles.stepText} allowFontScaling>
-            {currentStep.text}
-          </Text>
-          <Pressable
-            onPress={() => speakStep(currentStep)}
-            style={({ pressed }) => [styles.ttsButton, pressed && styles.pressed]}
-            accessibilityLabel={speaking ? t('guide.pauseTts') : t('guide.playTts')}
-            accessibilityRole="button"
-            accessibilityHint="Hear this step read aloud"
-          >
-            <Text style={styles.ttsLabel}>{speaking ? '⏸' : '▶'} Read aloud</Text>
-          </Pressable>
-        </ScrollView>
-      )}
-
-      <View style={styles.navRow}>
-        <Pressable
-          onPress={() => setCurrentStepIndex((i) => Math.max(0, i - 1))}
-          disabled={currentStepIndex === 0}
-          style={({ pressed }) => [
-            styles.navButton,
-            currentStepIndex === 0 && styles.navDisabled,
-            pressed && styles.pressed,
-          ]}
-          accessibilityLabel={t('guide.previous')}
-          accessibilityRole="button"
-          accessibilityState={{ disabled: currentStepIndex === 0 }}
-        >
-          <Text style={styles.navText} allowFontScaling>
-            {t('guide.previous')}
-          </Text>
-        </Pressable>
-        {currentStepIndex < steps.length - 1 ? (
-          <Pressable
-            onPress={() => setCurrentStepIndex((i) => i + 1)}
-            style={({ pressed }) => [styles.navButton, styles.next, pressed && styles.pressed]}
-            accessibilityLabel={t('guide.next')}
-            accessibilityRole="button"
-          >
-            <Text style={styles.navText} allowFontScaling>
-              {t('guide.next')}
-            </Text>
-          </Pressable>
-        ) : (
-          <Pressable
-            onPress={resetToHome}
-            style={({ pressed }) => [styles.navButton, styles.done, pressed && styles.pressed]}
-            accessibilityLabel={t('guide.done')}
-            accessibilityRole="button"
-            accessibilityHint="Finish and return to home"
-          >
-            <Text style={styles.navText} allowFontScaling>
-              {t('guide.done')}
-            </Text>
-          </Pressable>
-        )}
-      </View>
-
-      <Pressable
-        onPress={() => (isFavorite ? removeFavorite(guide.id) : addFavorite(guide.id))}
-        style={({ pressed }) => [styles.favButton, pressed && styles.pressed]}
-        accessibilityLabel={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-        accessibilityRole="button"
-      >
-        <Text style={styles.favText}>{isFavorite ? '❤️' : '🤍'} Favorites</Text>
-      </Pressable>
-    </View>
+    </ScreenWrapper>
   );
 }
 

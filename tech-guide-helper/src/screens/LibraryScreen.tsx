@@ -9,6 +9,7 @@ import { HomeButton } from '../components/HomeButton';
 import { loadAllGuides } from '../services/storage';
 import { Guide } from '../types/guide';
 import { useAppNavigation } from '../hooks/useAppNavigation';
+import { ScreenWrapper } from '../components/ScreenWrapper';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -28,43 +29,42 @@ export function LibraryScreen() {
   }, [refresh]);
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      accessibilityLabel={t('library.title')}
-    >
-      <View style={styles.homeRow}>
-        <HomeButton />
-      </View>
-      <Text style={styles.title} allowFontScaling>
-        {t('library.title')}
-      </Text>
-      <Text style={styles.subtitle} allowFontScaling>
-        {t('library.yourGuides')}
-      </Text>
-      {guides.length === 0 ? (
-        <Text style={styles.empty} allowFontScaling>
-          {t('library.noGuides')}
+    <ScreenWrapper padding={10}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        accessibilityLabel={t('library.title')}
+      >
+        <Text style={styles.title} allowFontScaling>
+          {t('library.title')}
         </Text>
-      ) : (
-        <View style={styles.list}>
-          {guides.map((g) => (
-            <Pressable
-              key={g.id}
-              onPress={() => goToGuide(g.id)}
-              style={({ pressed }) => [styles.row, pressed && styles.pressed]}
-              accessibilityLabel={g.title}
-              accessibilityRole="button"
-              accessibilityHint="Open this guide"
-            >
-              <Text style={styles.rowTitle} allowFontScaling>
-                {g.title}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-      )}
-    </ScrollView>
+        <Text style={styles.subtitle} allowFontScaling>
+          {t('library.yourGuides')}
+        </Text>
+        {guides.length === 0 ? (
+          <Text style={styles.empty} allowFontScaling>
+            {t('library.noGuides')}
+          </Text>
+        ) : (
+          <View style={styles.list}>
+            {guides.map((g) => (
+              <Pressable
+                key={g.id}
+                onPress={() => goToGuide(g.id)}
+                style={({ pressed }) => [styles.row, pressed && styles.pressed]}
+                accessibilityLabel={g.title}
+                accessibilityRole="button"
+                accessibilityHint="Open this guide"
+              >
+                <Text style={styles.rowTitle} allowFontScaling>
+                  {g.title}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        )}
+      </ScrollView>
+    </ScreenWrapper>
   );
 }
 

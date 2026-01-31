@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Tech Guide Helper",
-    "slug": "tech-guide-helper",
+    "name": "App Cheat Sheet",
+    "slug": "app-cheat-sheet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,8 +25,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "name": "Tech Guide Helper",
-      "shortName": "Tech Guide Helper",
+      "name": "App Cheat Sheet",
+      "shortName": "App Cheat Sheet",
       "description": "Step-by-step tech guides for everyday tasks. Easy for everyone.",
       "themeColor": "#2d7a5e",
       "backgroundColor": "#ffffff",
@@ -38,7 +38,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "tech-guide-helper"
+        "projectId": "app-cheat-sheet"
       }
     }
   }
