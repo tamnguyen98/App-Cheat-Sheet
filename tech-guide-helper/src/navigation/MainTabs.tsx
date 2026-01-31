@@ -33,14 +33,14 @@ export function MainTabs() {
         tabBarItemStyle: { paddingVertical: 4 },
       }}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Search"
         component={SearchScreen}
         options={{
           tabBarLabel: 'Search',
           tabBarAccessibilityLabel: 'Search',
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Home"
         component={HomeScreen}

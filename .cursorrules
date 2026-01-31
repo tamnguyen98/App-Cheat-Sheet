@@ -8,6 +8,7 @@
 - Login: Optional Firebase Auth.
 - Offline: LRU cache + preload popular guides + manual download.
 - Languages: Multi-lang support (start English + Spanish).
+- User facing texts are placed in a central json file grouped by the language.
 - Accessibility: WCAG 2.2 AA minimum (aim AAA); always set accessibilityLabel, Role, Hint on interactive components.
 
 ## Code Style & Patterns
@@ -35,6 +36,7 @@
 - Force login on first open.
 - Complex animations on load.
 - Overload home screen — keep minimalist.
+- Hard code user texts.
 
 ## When in Doubt
 - Ask: "Would a 75-year-old with shaky hands and poor eyesight use this comfortably in <10 seconds?"
