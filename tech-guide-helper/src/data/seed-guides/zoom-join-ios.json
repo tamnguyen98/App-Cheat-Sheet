@@ -1,7 +1,7 @@
 {
   "id": "zoom-join-ios",
   "title": "Join a Zoom meeting on iPhone or iPad",
-  "version": 1,
+  "version": 2,
   "lastUpdated": "2025-01-15",
   "deviceFamily": ["ios-iphone"],
   "language": "en",
@@ -10,32 +10,44 @@
     {
       "stepNumber": 1,
       "text": "Open the Zoom app. Get it from the App Store if you haven't already.",
-      "image": "",
+      "image": "assets/guides/zoom/mobile/icon.webp",
       "tts": "Open the Zoom app. Get it from the App Store if you haven't already."
     },
     {
       "stepNumber": 2,
-      "text": "Tap \"Join a Meeting\" on the first screen.",
-      "image": "",
+      "text": "Tap \"Join a Meeting\" at the bottom of the first screen.",
+      "image": "assets/guides/zoom/mobile/zoom-landing-page.png",
       "tts": "Tap Join a Meeting on the first screen."
     },
     {
       "stepNumber": 3,
       "text": "Type the meeting ID from your invite (9 or 10 digits).",
-      "image": "",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-info-input-page-meeting-id.png",
       "tts": "Type the meeting ID from your invite. It's nine or ten digits."
     },
     {
       "stepNumber": 4,
-      "text": "Tap \"Join.\" Enter your name if asked, then tap OK.",
-      "image": "",
-      "tts": "Tap Join. Enter your name if asked, then tap OK."
+      "text": "Enter your display name in the box below the meeting ID.",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-info-input-page-name.png",
+      "tts": "Enter your display name in the box below the meeting ID."
     },
     {
       "stepNumber": 5,
-      "text": "Enter the meeting passcode if you see a box for it. You're now in the meeting.",
+      "text": "When you're ready, tap \"Join.\"",
       "image": "",
+      "tts": "Tap Join."
+    },
+    {
+      "stepNumber": 6,
+      "text": "Enter the meeting passcode if you see a box for it. You're now in the meeting.",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-passcode-input.png",
       "tts": "Enter the meeting passcode if you see a box for it. You're now in the meeting."
+    },
+    {
+      "stepNumber": 7,
+      "text": "You can disable your microphone or camera before entering by toggling the respective icons. Then tap \"Join Meeting.\"",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-finalize-page.png",
+      "tts": "You can disable your microphone or camera before entering by toggling the respective icons. Then tap Join Meeting."
     }
   ]
 }
