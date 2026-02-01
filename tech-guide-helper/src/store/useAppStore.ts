@@ -18,6 +18,8 @@ export interface AppState {
   setTtsAutoPlay: (on: boolean) => void;
   highContrast: boolean;
   setHighContrast: (on: boolean) => void;
+  viewedGuides: string[];
+  addViewedGuide: (guideId: string) => void;
 }
 
 const TODAY = () => new Date().toISOString().slice(0, 10);
@@ -50,4 +52,14 @@ export const useAppStore = create<AppState>((set) => ({
   setTtsAutoPlay: (ttsAutoPlay) => set({ ttsAutoPlay }),
   highContrast: false,
   setHighContrast: (highContrast) => set({ highContrast }),
+  viewedGuides: [],
+  addViewedGuide: (guideId) =>
+    set((s) => {
+      // Remove duplicate if exists, then add to front (most recent first)
+      const filtered = s.viewedGuides.filter((id) => id !== guideId);
+      const updated = [guideId, ...filtered];
+      // Keep only the 20 most recent
+      return { viewedGuides: updated.slice(0, 20) };
+    }),
 }));
+

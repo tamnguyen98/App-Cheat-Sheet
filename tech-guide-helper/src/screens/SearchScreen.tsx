@@ -18,6 +18,7 @@ import { loadAllGuides } from '../services/storage';
 import { Guide } from '../types/guide';
 import { useAppNavigation } from '../hooks/useAppNavigation';
 import { ScreenWrapper } from '../components/ScreenWrapper';
+import { useTheme } from '../hooks/useTheme';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -32,6 +33,7 @@ const SUGGESTION_IDS = [
 
 export function SearchScreen() {
   const { t } = useTranslation();
+  const theme = useTheme();
   const { goToGuide, goToHome } = useAppNavigation();
   const [query, setQuery] = useState('');
   const [guides, setGuides] = useState<Guide[]>([]);
@@ -49,18 +51,75 @@ export function SearchScreen() {
 
   const suggestions = loaded
     ? SUGGESTION_IDS.map((id) => guides.find((g) => g.id === id)).filter(
-        (g): g is Guide => g != null
-      )
+      (g): g is Guide => g != null
+    )
     : [];
 
   const filtered =
     query.trim() === ''
       ? []
       : guides.filter(
-          (g) =>
-            g.title.toLowerCase().includes(query.toLowerCase()) ||
-            g.category?.toLowerCase().includes(query.toLowerCase())
-        );
+        (g) =>
+          g.title.toLowerCase().includes(query.toLowerCase()) ||
+          g.category?.toLowerCase().includes(query.toLowerCase())
+      );
+
+  const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: theme.background },
+    content: { padding: 24, paddingBottom: 48 },
+    homeRow: { marginBottom: 20 },
+    title: {
+      fontSize: 28,
+      fontWeight: '700',
+      color: theme.textPrimary,
+      marginBottom: 24,
+      textAlign: 'center',
+    },
+    searchRow: { marginBottom: 28 },
+    suggestionsTitle: {
+      fontSize: MIN_FONT_SIZE,
+      fontWeight: '600',
+      color: theme.textSecondary,
+      marginBottom: 12,
+    },
+    suggestions: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginBottom: 24 },
+    chip: {
+      minHeight: MIN_TOUCH_DP,
+      paddingHorizontal: 20,
+      paddingVertical: 14,
+      backgroundColor: theme.primaryLight,
+      borderRadius: 24,
+      justifyContent: 'center',
+    },
+    chipText: { fontSize: MIN_FONT_SIZE, fontWeight: '600', color: theme.primary },
+    pressed: { opacity: 0.85 },
+    results: { marginTop: 16, gap: 8 },
+    resultsTitle: {
+      fontSize: MIN_FONT_SIZE,
+      fontWeight: '600',
+      color: theme.textSecondary,
+      marginBottom: 8,
+    },
+    resultRow: {
+      minHeight: MIN_TOUCH_DP,
+      paddingVertical: 14,
+      paddingHorizontal: 16,
+      backgroundColor: theme.surface,
+      borderRadius: 8,
+      justifyContent: 'center',
+    },
+    resultText: { fontSize: MIN_FONT_SIZE, color: theme.textPrimary },
+    browseButton: {
+      minHeight: MIN_TOUCH_DP,
+      marginTop: 24,
+      paddingVertical: 14,
+      backgroundColor: theme.primary,
+      borderRadius: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    browseText: { fontSize: MIN_FONT_SIZE, fontWeight: '700', color: theme.textInverse },
+  });
 
   return (
     <ScreenWrapper padding={10}>
@@ -69,13 +128,6 @@ export function SearchScreen() {
         contentContainerStyle={styles.content}
         accessibilityLabel={t('search.landingLabel')}
       >
-        {/* <View style={styles.homeRow}>
-          <HomeButton
-            accessibilityLabel={t('search.browseAll')}
-            accessibilityHint={t('search.browseAllHint')}
-          />
-        </View> */}
-
         <Text style={styles.title} allowFontScaling>
           {t('search.title')}
         </Text>
@@ -150,60 +202,3 @@ export function SearchScreen() {
     </ScreenWrapper>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f9f7' },
-  content: { padding: 24, paddingBottom: 48 },
-  homeRow: { marginBottom: 20 },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#111',
-    marginBottom: 24,
-    textAlign: 'center',
-  },
-  searchRow: { marginBottom: 28 },
-  suggestionsTitle: {
-    fontSize: MIN_FONT_SIZE,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 12,
-  },
-  suggestions: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginBottom: 24 },
-  chip: {
-    minHeight: MIN_TOUCH_DP,
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    backgroundColor: '#e8f4f0',
-    borderRadius: 24,
-    justifyContent: 'center',
-  },
-  chipText: { fontSize: MIN_FONT_SIZE, fontWeight: '600', color: '#2d7a5e' },
-  pressed: { opacity: 0.85 },
-  results: { marginTop: 16, gap: 8 },
-  resultsTitle: {
-    fontSize: MIN_FONT_SIZE,
-    fontWeight: '600',
-    color: '#555',
-    marginBottom: 8,
-  },
-  resultRow: {
-    minHeight: MIN_TOUCH_DP,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    justifyContent: 'center',
-  },
-  resultText: { fontSize: MIN_FONT_SIZE, color: '#111' },
-  browseButton: {
-    minHeight: MIN_TOUCH_DP,
-    marginTop: 24,
-    paddingVertical: 14,
-    backgroundColor: '#2d7a5e',
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  browseText: { fontSize: MIN_FONT_SIZE, fontWeight: '700', color: '#fff' },
-});

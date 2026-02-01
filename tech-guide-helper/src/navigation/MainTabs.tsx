@@ -1,14 +1,8 @@
-/**
- * Bottom tabs: Search (landing), Home, Library, Favorites, Settings.
- * Large labels, a11y.
- */
-
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SearchScreen } from '../screens/SearchScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { LibraryScreen } from '../screens/LibraryScreen';
-import { FavoritesScreen } from '../screens/FavoritesScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import type { RootTabParamList } from './types';
 
@@ -55,14 +49,6 @@ export function MainTabs() {
         options={{
           tabBarLabel: 'Library',
           tabBarAccessibilityLabel: 'Library',
-        }}
-      />
-      <Tab.Screen
-        name="Favorites"
-        component={FavoritesScreen}
-        options={{
-          tabBarLabel: 'Favorites',
-          tabBarAccessibilityLabel: 'Favorites',
         }}
       />
       <Tab.Screen
