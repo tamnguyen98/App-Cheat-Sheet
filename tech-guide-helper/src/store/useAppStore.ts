@@ -20,6 +20,9 @@ export interface AppState {
   setHighContrast: (on: boolean) => void;
   viewedGuides: string[];
   addViewedGuide: (guideId: string) => void;
+  userEmail: string | null;
+  idToken: string | null;
+  setAuth: (email: string | null, token: string | null) => void;
 }
 
 const TODAY = () => new Date().toISOString().slice(0, 10);
@@ -61,5 +64,8 @@ export const useAppStore = create<AppState>((set) => ({
       // Keep only the 20 most recent
       return { viewedGuides: updated.slice(0, 20) };
     }),
+  userEmail: null,
+  idToken: null,
+  setAuth: (userEmail, idToken) => set({ userEmail, idToken }),
 }));
 

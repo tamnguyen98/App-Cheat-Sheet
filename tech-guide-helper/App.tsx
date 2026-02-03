@@ -38,7 +38,7 @@ export default function App() {
           </Text>
           <StatusBar style="auto" />
         </SafeAreaView>
-        
+
       </SafeAreaProvider>
     );
   }
@@ -59,14 +59,14 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-        <PaperProvider>
-          <NavigationContainer ref={rootNavRef}>
-            <NavigationRefProvider navigationRef={rootNavRef}>
-              <RootNavigator />
-              <StatusBar style="auto" />
-            </NavigationRefProvider>
-          </NavigationContainer>
-        </PaperProvider>
+      <PaperProvider>
+        <NavigationContainer ref={rootNavRef}>
+          <NavigationRefProvider navigationRef={rootNavRef}>
+            <RootNavigator />
+            <StatusBar style="auto" />
+          </NavigationRefProvider>
+        </NavigationContainer>
+      </PaperProvider>
     </SafeAreaProvider>
   );
 }

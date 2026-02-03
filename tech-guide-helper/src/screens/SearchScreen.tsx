@@ -19,6 +19,9 @@ import { Guide } from '../types/guide';
 import { useAppNavigation } from '../hooks/useAppNavigation';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useTheme } from '../hooks/useTheme';
+import { api } from '../services/api';
+import { useAppStore } from '../store/useAppStore';
+import { Platform } from 'react-native';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -35,34 +38,72 @@ export function SearchScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const { goToGuide, goToHome } = useAppNavigation();
+  const language = useAppStore((s) => s.language);
   const [query, setQuery] = useState('');
   const [guides, setGuides] = useState<Guide[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const [suggestions, setSuggestions] = useState<Guide[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const loadGuides = useCallback(async () => {
-    const list = await loadAllGuides();
-    setGuides(list);
-    setLoaded(true);
-  }, []);
+  // Device family logic: pick a default based on OS
+  const deviceFamily = Platform.OS === 'ios' ? 'ios-iphone' : 'android-generic';
+
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    try {
+      // 1) Load initial suggestions (top inquiries)
+      const top = await api.getGuides({ lang: language, device: deviceFamily, limit: 10 });
+      setSuggestions(top);
+
+      // 2) Load all local guides as fallback for immediate search if offline
+      const local = await loadAllGuides();
+      setGuides(local);
+    } catch (e) {
+      console.warn('Failed to load search data from backend', e);
+      // Fallback to local only
+      const local = await loadAllGuides();
+      setGuides(local);
+      setSuggestions(SUGGESTION_IDS.map(id => local.find(g => g.id === id)).filter((g): g is Guide => !!g));
+    } finally {
+      setLoading(false);
+    }
+  }, [language, deviceFamily]);
 
   useEffect(() => {
-    if (!loaded) loadGuides();
-  }, [loaded, loadGuides]);
+    loadData();
+  }, [loadData]);
 
-  const suggestions = loaded
-    ? SUGGESTION_IDS.map((id) => guides.find((g) => g.id === id)).filter(
-      (g): g is Guide => g != null
-    )
-    : [];
+  // Handle search via API or local filter
+  const [searchResults, setSearchResults] = useState<Guide[]>([]);
 
-  const filtered =
-    query.trim() === ''
-      ? []
-      : guides.filter(
-        (g) =>
-          g.title.toLowerCase().includes(query.toLowerCase()) ||
-          g.category?.toLowerCase().includes(query.toLowerCase())
-      );
+  useEffect(() => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const results = await api.getGuides({
+          search: query,
+          lang: language,
+          device: deviceFamily
+        });
+        setSearchResults(results);
+      } catch (e) {
+        // Fallback to local filtering
+        const filtered = guides.filter(
+          (g) =>
+            g.title.toLowerCase().includes(query.toLowerCase()) ||
+            g.category?.toLowerCase().includes(query.toLowerCase())
+        );
+        setSearchResults(filtered);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query, language, deviceFamily, guides]);
+
+  const filtered = searchResults;
 
   const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: theme.background },

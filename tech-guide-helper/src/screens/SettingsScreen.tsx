@@ -3,15 +3,23 @@
  * Persistent HOME button.
  */
 
-import React from 'react';
-import { View, Text, ScrollView, Pressable, Switch, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, ScrollView, Pressable, Switch, StyleSheet, TextInput, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from 'firebase/auth';
+import { getFirebaseAuth } from '../services/firebase';
 import { useTranslation } from 'react-i18next';
 import { HomeButton } from '../components/HomeButton';
 import { useAppStore } from '../store/useAppStore';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useTheme } from '../hooks/useTheme';
 import { LANGUAGES } from '../i18n';
+import { api } from '../services/api';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -25,10 +33,115 @@ export function SettingsScreen() {
   const setTtsAutoPlay = useAppStore((s) => s.setTtsAutoPlay);
   const highContrast = useAppStore((s) => s.highContrast);
   const setHighContrast = useAppStore((s) => s.setHighContrast);
+  const userEmail = useAppStore((s) => s.userEmail);
+  const setAuth = useAppStore((s) => s.setAuth);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const hydrateFromBackend = useCallback(async () => {
+    try {
+      const profile = await api.getMe();
+      if (profile.settings) {
+        if (profile.settings.language) {
+          setLanguage(profile.settings.language);
+          i18n.changeLanguage(profile.settings.language);
+        }
+        if (profile.settings.ttsAutoPlay !== undefined) setTtsAutoPlay(profile.settings.ttsAutoPlay);
+        if (profile.settings.highContrast !== undefined) setHighContrast(profile.settings.highContrast);
+      }
+    } catch (e) {
+      console.warn('Failed to hydrate settings from backend', e);
+    }
+  }, [setLanguage, i18n, setTtsAutoPlay, setHighContrast]);
+
+  useEffect(() => {
+    const auth = getFirebaseAuth();
+    if (!auth) return;
+
+    return onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const token = await user.getIdToken();
+        setAuth(user.email, token);
+        // Task C: Hydrate after sign-in
+        hydrateFromBackend();
+      } else {
+        setAuth(null, null);
+      }
+    });
+  }, [setAuth, hydrateFromBackend]);
+
+  const handleSignIn = async () => {
+    const auth = getFirebaseAuth();
+    if (!auth) return;
+    setLoading(true);
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      const token = await cred.user.getIdToken();
+      setAuth(cred.user.email, token);
+      setEmail('');
+      setPassword('');
+      // hydration happens in onAuthStateChanged
+    } catch (e: any) {
+      Alert.alert(t('settings.authError'), e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignUp = async () => {
+    const auth = getFirebaseAuth();
+    if (!auth) return;
+    setLoading(true);
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      const token = await cred.user.getIdToken();
+      setAuth(cred.user.email, token);
+      setEmail('');
+      setPassword('');
+    } catch (e: any) {
+      Alert.alert(t('settings.authError'), e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const syncSettings = async (updates: any) => {
+    if (userEmail) {
+      try {
+        await api.patchMeSettings(updates);
+      } catch (e) {
+        console.warn('Failed to sync settings to backend', e);
+      }
+    }
+  };
+
+  const handleSignOut = async () => {
+    const auth = getFirebaseAuth();
+    if (!auth) return;
+    try {
+      await signOut(auth);
+      setAuth(null, null);
+    } catch (e: any) {
+      Alert.alert(t('settings.authError'), e.message);
+    }
+  };
 
   const setLang = (lang: string) => {
     setLanguage(lang);
     i18n.changeLanguage(lang);
+    syncSettings({ language: lang });
+  };
+
+  const toggleTts = (val: boolean) => {
+    setTtsAutoPlay(val);
+    syncSettings({ ttsAutoPlay: val });
+  };
+
+  const toggleHighContrast = (val: boolean) => {
+    setHighContrast(val);
+    syncSettings({ highContrast: val });
   };
 
   const styles = StyleSheet.create({
@@ -78,6 +191,56 @@ export function SettingsScreen() {
       minHeight: MIN_TOUCH_DP,
     },
     about: { fontSize: MIN_FONT_SIZE, color: theme.textTertiary, marginTop: 16 },
+    input: {
+      minHeight: MIN_TOUCH_DP,
+      borderWidth: 1,
+      borderColor: theme.border,
+      borderRadius: 8,
+      paddingHorizontal: 16,
+      fontSize: MIN_FONT_SIZE,
+      marginBottom: 12,
+      color: theme.textPrimary,
+      backgroundColor: theme.surface,
+    },
+    authButton: {
+      flex: 1,
+      minHeight: MIN_TOUCH_DP,
+      paddingVertical: 14,
+      backgroundColor: theme.primary,
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    authButtonText: {
+      fontSize: MIN_FONT_SIZE,
+      fontWeight: '700',
+      color: theme.textInverse,
+    },
+    signUpButton: {
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      borderColor: theme.primary,
+    },
+    signUpButtonText: {
+      color: theme.primary,
+    },
+    signOutButton: {
+      backgroundColor: theme.error || '#b00',
+    },
+    signOutButtonText: {
+      color: '#fff',
+    },
+    authState: {
+      fontSize: MIN_FONT_SIZE,
+      color: theme.textSecondary,
+      marginBottom: 16,
+    },
+    navDisabled: {
+      opacity: 0.5,
+    },
+    pressed: {
+      opacity: 0.85,
+    },
   });
 
   return (
@@ -122,7 +285,7 @@ export function SettingsScreen() {
             </Text>
             <Switch
               value={ttsAutoPlay}
-              onValueChange={setTtsAutoPlay}
+              onValueChange={toggleTts}
               accessibilityLabel={t('settings.ttsAutoPlay')}
               accessibilityRole="switch"
             />
@@ -136,11 +299,63 @@ export function SettingsScreen() {
             </Text>
             <Switch
               value={highContrast}
-              onValueChange={setHighContrast}
+              onValueChange={toggleHighContrast}
               accessibilityLabel={t('settings.highContrast')}
               accessibilityRole="switch"
             />
           </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.title} allowFontScaling>{t('settings.authTitle')}</Text>
+          <Text style={styles.authState} allowFontScaling>
+            {userEmail ? t('settings.signedInAs', { email: userEmail }) : t('settings.notSignedIn')}
+          </Text>
+
+          {!userEmail ? (
+            <View>
+              <TextInput
+                style={styles.input}
+                placeholder={t('settings.emailLabel')}
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                placeholderTextColor={theme.inputPlaceholder}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder={t('settings.passwordLabel')}
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                placeholderTextColor={theme.inputPlaceholder}
+              />
+              <View style={styles.row}>
+                <Pressable
+                  onPress={handleSignIn}
+                  disabled={loading}
+                  style={({ pressed }) => [styles.authButton, pressed && styles.pressed, loading && styles.navDisabled]}
+                >
+                  <Text style={styles.authButtonText}>{t('settings.signIn')}</Text>
+                </Pressable>
+                <Pressable
+                  onPress={handleSignUp}
+                  disabled={loading}
+                  style={({ pressed }) => [styles.authButton, styles.signUpButton, pressed && styles.pressed, loading && styles.navDisabled]}
+                >
+                  <Text style={[styles.authButtonText, styles.signUpButtonText]}>{t('settings.signUp')}</Text>
+                </Pressable>
+              </View>
+            </View>
+          ) : (
+            <Pressable
+              onPress={handleSignOut}
+              style={({ pressed }) => [styles.authButton, styles.signOutButton, pressed && styles.pressed]}
+            >
+              <Text style={[styles.authButtonText, styles.signOutButtonText]}>{t('settings.signOut')}</Text>
+            </Pressable>
+          )}
         </View>
 
         <Text style={styles.about} allowFontScaling>
