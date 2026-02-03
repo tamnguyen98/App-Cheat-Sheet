@@ -1,0 +1,55 @@
+{
+  "id": "zoom-join-android-vi",
+  "title": "Tham gia cuộc họp Zoom trên Android",
+  "version": 3,
+  "lastUpdated": "2025-01-15",
+  "deviceFamily": [
+    "android-generic"
+  ],
+  "language": "vi",
+  "category": "Cuộc Gọi Video",
+  "steps": [
+    {
+      "stepNumber": 1,
+      "text": "Mở ứng dụng Zoom. Tải từ App Store nếu chưa có.",
+      "image": "assets/guides/zoom/mobile/icon.webp",
+      "tts": "Mở ứng dụng Zoom. Tải từ App Store nếu chưa có."
+    },
+    {
+      "stepNumber": 2,
+      "text": "Chạm \"Tham gia cuộc họp\" ở dưới cùng của màn hình đầu tiên.",
+      "image": "assets/guides/zoom/mobile/zoom-landing-page.png",
+      "tts": "Chạm Tham gia cuộc họp trên màn hình đầu tiên."
+    },
+    {
+      "stepNumber": 3,
+      "text": "Nhập ID cuộc họp từ lời mời của bạn (9 hoặc 10 chữ số).",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-info-input-page-meeting-id.png",
+      "tts": "Nhập ID cuộc họp từ lời mời của bạn. Là chín hoặc mười chữ số."
+    },
+    {
+      "stepNumber": 4,
+      "text": "Nhập tên hiển thị của bạn trong hộp dưới ID cuộc họp.",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-info-input-page-name.png",
+      "tts": "Nhập tên hiển thị của bạn trong hộp dưới ID cuộc họp."
+    },
+    {
+      "stepNumber": 5,
+      "text": "Khi sẵn sàng, chạm \"Tham gia.\"",
+      "image": "",
+      "tts": "Chạm Tham gia."
+    },
+    {
+      "stepNumber": 6,
+      "text": "Nhập mật khẩu cuộc họp nếu bạn thấy hộp cho nó. Bạn bây giờ trong cuộc họp.",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-passcode-input.png",
+      "tts": "Nhập mật khẩu cuộc họp nếu bạn thấy hộp cho nó. Bạn bây giờ trong cuộc họp."
+    },
+    {
+      "stepNumber": 7,
+      "text": "Bạn có thể tắt mic hoặc camera trước khi vào bằng cách chuyển đổi các icon tương ứng. Sau đó chạm \"Tham gia cuộc họp.\"",
+      "image": "assets/guides/zoom/mobile/zoom-meeting-finalize-page.png",
+      "tts": "Bạn có thể tắt mic hoặc camera trước khi vào bằng cách chuyển đổi các icon tương ứng. Sau đó chạm Tham gia cuộc họp."
+    }
+  ]
+}

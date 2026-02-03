@@ -7,6 +7,7 @@ import { useAppStore } from '../store/useAppStore';
 import { Guide } from '../types/guide';
 
 const BASE_URL = 'https://localhost:7253';
+// const BASE_URL = 'https://localhost:7253';
 const TIMEOUT_MS = 10000;
 
 export interface UserSettings {
@@ -43,6 +44,12 @@ async function apiRequest<T>(
     if (idToken) {
         headers.set('Authorization', `Bearer ${idToken}`);
     }
+
+    console.log('API Request:', {
+        method: options.method || 'GET',
+        url: `${BASE_URL}${path}`,
+        headers,
+    });
 
     try {
         const response = await fetch(`${BASE_URL}${path}`, {
@@ -95,6 +102,11 @@ export const api = {
 
     /** Update user settings. */
     async patchMeSettings(settings: Partial<UserSettings>): Promise<UserProfile> {
+        console.log('API Request:', {
+            method: 'PATCH',
+            url: `${BASE_URL}/me/settings`,
+            body: JSON.stringify(settings),
+        });
         return apiRequest<UserProfile>('/me/settings', {
             method: 'PATCH',
             body: JSON.stringify(settings),
