@@ -250,6 +250,58 @@ export function SettingsScreen() {
         contentContainerStyle={styles.content}
         accessibilityLabel={t('settings.title')}
       >
+        <View style={styles.section}>
+          <Text style={styles.title} allowFontScaling>{t('settings.authTitle')}</Text>
+          <Text style={styles.authState} allowFontScaling>
+            {userEmail ? t('settings.signedInAs', { email: userEmail }) : t('settings.notSignedIn')}
+          </Text>
+
+          {!userEmail ? (
+            <View>
+              <TextInput
+                style={styles.input}
+                placeholder={t('settings.emailLabel')}
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                placeholderTextColor={theme.inputPlaceholder}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder={t('settings.passwordLabel')}
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                placeholderTextColor={theme.inputPlaceholder}
+              />
+              <View style={styles.row}>
+                <Pressable
+                  onPress={handleSignIn}
+                  disabled={loading}
+                  style={({ pressed }) => [styles.authButton, pressed && styles.pressed, loading && styles.navDisabled]}
+                >
+                  <Text style={styles.authButtonText}>{t('settings.signIn')}</Text>
+                </Pressable>
+                <Pressable
+                  onPress={handleSignUp}
+                  disabled={loading}
+                  style={({ pressed }) => [styles.authButton, styles.signUpButton, pressed && styles.pressed, loading && styles.navDisabled]}
+                >
+                  <Text style={[styles.authButtonText, styles.signUpButtonText]}>{t('settings.signUp')}</Text>
+                </Pressable>
+              </View>
+            </View>
+          ) : (
+            <Pressable
+              onPress={handleSignOut}
+              style={({ pressed }) => [styles.authButton, styles.signOutButton, pressed && styles.pressed]}
+            >
+              <Text style={[styles.authButtonText, styles.signOutButtonText]}>{t('settings.signOut')}</Text>
+            </Pressable>
+          )}
+        </View>
+
         <Text style={styles.title} allowFontScaling>
           {t('settings.title')}
         </Text>
@@ -304,58 +356,6 @@ export function SettingsScreen() {
               accessibilityRole="switch"
             />
           </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.title} allowFontScaling>{t('settings.authTitle')}</Text>
-          <Text style={styles.authState} allowFontScaling>
-            {userEmail ? t('settings.signedInAs', { email: userEmail }) : t('settings.notSignedIn')}
-          </Text>
-
-          {!userEmail ? (
-            <View>
-              <TextInput
-                style={styles.input}
-                placeholder={t('settings.emailLabel')}
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                placeholderTextColor={theme.inputPlaceholder}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder={t('settings.passwordLabel')}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                placeholderTextColor={theme.inputPlaceholder}
-              />
-              <View style={styles.row}>
-                <Pressable
-                  onPress={handleSignIn}
-                  disabled={loading}
-                  style={({ pressed }) => [styles.authButton, pressed && styles.pressed, loading && styles.navDisabled]}
-                >
-                  <Text style={styles.authButtonText}>{t('settings.signIn')}</Text>
-                </Pressable>
-                <Pressable
-                  onPress={handleSignUp}
-                  disabled={loading}
-                  style={({ pressed }) => [styles.authButton, styles.signUpButton, pressed && styles.pressed, loading && styles.navDisabled]}
-                >
-                  <Text style={[styles.authButtonText, styles.signUpButtonText]}>{t('settings.signUp')}</Text>
-                </Pressable>
-              </View>
-            </View>
-          ) : (
-            <Pressable
-              onPress={handleSignOut}
-              style={({ pressed }) => [styles.authButton, styles.signOutButton, pressed && styles.pressed]}
-            >
-              <Text style={[styles.authButtonText, styles.signOutButtonText]}>{t('settings.signOut')}</Text>
-            </Pressable>
-          )}
         </View>
 
         <Text style={styles.about} allowFontScaling>
