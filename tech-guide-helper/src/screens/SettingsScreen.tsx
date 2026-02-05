@@ -40,37 +40,7 @@ export function SettingsScreen() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const hydrateFromBackend = useCallback(async () => {
-    try {
-      const profile = await api.getMe();
-      if (profile.settings) {
-        if (profile.settings.language) {
-          setLanguage(profile.settings.language);
-          i18n.changeLanguage(profile.settings.language);
-        }
-        if (profile.settings.ttsAutoPlay !== undefined) setTtsAutoPlay(profile.settings.ttsAutoPlay);
-        if (profile.settings.highContrast !== undefined) setHighContrast(profile.settings.highContrast);
-      }
-    } catch (e) {
-      console.warn('Failed to hydrate settings from backend', e);
-    }
-  }, [setLanguage, i18n, setTtsAutoPlay, setHighContrast]);
-
-  useEffect(() => {
-    const auth = getFirebaseAuth();
-    if (!auth) return;
-
-    return onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        setAuth(user.email, token);
-        // Task C: Hydrate after sign-in
-        hydrateFromBackend();
-      } else {
-        setAuth(null, null);
-      }
-    });
-  }, [setAuth, hydrateFromBackend]);
+  // Note: onAuthStateChanged and hydration are now handled globally in useAuth() (App.tsx)
 
   const handleSignIn = async () => {
     const auth = getFirebaseAuth();

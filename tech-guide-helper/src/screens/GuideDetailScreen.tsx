@@ -42,9 +42,20 @@ export function GuideDetailScreen() {
   const addFavorite = useAppStore((s) => s.addFavorite);
   const removeFavorite = useAppStore((s) => s.removeFavorite);
   const favorites = useAppStore((s) => s.favorites);
+  const idToken = useAppStore((s) => s.idToken);
   const incrementGuidesViewedToday = useAppStore((s) => s.incrementGuidesViewedToday);
   const addViewedGuide = useAppStore((s) => s.addViewedGuide);
 
+  const isFav = favorites.includes(guideId || '');
+
+  const toggleFavorite = () => {
+    if (!guideId) return;
+    if (isFav) {
+      removeFavorite(guideId);
+    } else {
+      addFavorite(guideId);
+    }
+  };
 
   useEffect(() => {
     if (!guideId) return;

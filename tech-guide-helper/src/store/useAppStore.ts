@@ -3,6 +3,7 @@
  */
 
 import { create } from 'zustand';
+import { Guide } from '../types/guide';
 
 export interface AppState {
   language: string;
@@ -23,6 +24,17 @@ export interface AppState {
   userEmail: string | null;
   idToken: string | null;
   setAuth: (email: string | null, token: string | null) => void;
+  // New favorites/personal guides state
+  favoriteGuides: Guide[];
+  setFavoriteGuides: (guides: Guide[]) => void;
+  appendFavoriteGuides: (guides: Guide[]) => void;
+  myGuides: Guide[];
+  setMyGuides: (guides: Guide[]) => void;
+  appendMyGuides: (guides: Guide[]) => void;
+  isLoadingFavorites: boolean;
+  setIsLoadingFavorites: (loading: boolean) => void;
+  isLoadingMyGuides: boolean;
+  setIsLoadingMyGuides: (loading: boolean) => void;
 }
 
 const TODAY = () => new Date().toISOString().slice(0, 10);
@@ -67,5 +79,16 @@ export const useAppStore = create<AppState>((set) => ({
   userEmail: null,
   idToken: null,
   setAuth: (userEmail, idToken) => set({ userEmail, idToken }),
+  // New state
+  favoriteGuides: [],
+  setFavoriteGuides: (favoriteGuides) => set({ favoriteGuides }),
+  appendFavoriteGuides: (guides) => set((s) => ({ favoriteGuides: [...s.favoriteGuides, ...guides] })),
+  myGuides: [],
+  setMyGuides: (myGuides) => set({ myGuides }),
+  appendMyGuides: (guides) => set((s) => ({ myGuides: [...s.myGuides, ...guides] })),
+  isLoadingFavorites: false,
+  setIsLoadingFavorites: (isLoadingFavorites) => set({ isLoadingFavorites }),
+  isLoadingMyGuides: false,
+  setIsLoadingMyGuides: (isLoadingMyGuides) => set({ isLoadingMyGuides }),
 }));
 
