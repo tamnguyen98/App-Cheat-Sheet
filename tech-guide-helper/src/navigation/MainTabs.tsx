@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SearchScreen } from '../screens/SearchScreen';
-import { HomeScreen } from '../screens/HomeScreen';
+import { BrowseScreen } from '../screens/BrowseScreen';
 import { LibraryScreen } from '../screens/LibraryScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import type { RootTabParamList } from './types';
@@ -27,17 +26,9 @@ export function MainTabs() {
         tabBarItemStyle: { paddingVertical: 4 },
       }}
     >
-      {/* <Tab.Screen
-        name="Search"
-        component={SearchScreen}
-        options={{
-          tabBarLabel: 'Search',
-          tabBarAccessibilityLabel: 'Search',
-        }}
-      /> */}
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Browse"
+        component={BrowseScreen}
         options={{
           tabBarLabel: 'Browse',
           tabBarAccessibilityLabel: 'Browse all guides',

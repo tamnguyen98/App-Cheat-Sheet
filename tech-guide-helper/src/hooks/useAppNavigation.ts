@@ -13,11 +13,11 @@ export function useAppNavigation() {
   function goToHome(): void {
     const root = navRef?.current;
     if (!root?.isReady()) return;
-    root.navigate('MainTabs', { screen: 'Home' });
+    root.navigate('MainTabs', { screen: 'Browse' });
   }
 
   /**
-   * Reset entire stack and show Home tab. Use for "Done" and as panic button
+   * Reset entire stack and show Browse tab. Use for "Done" and as panic button
    * so seniors don't get stuck in a Back button loop.
    */
   function resetToHome(): void {
@@ -30,12 +30,10 @@ export function useAppNavigation() {
           {
             name: 'MainTabs',
             state: {
-              index: 1,
+              index: 0,
               routes: [
-                { name: 'Search' },
-                { name: 'Home' },
+                { name: 'Browse' },
                 { name: 'Library' },
-                { name: 'Favorites' },
                 { name: 'Settings' },
               ] as const,
             },

@@ -13,69 +13,70 @@ A minimalist, visual quick-reference PWA/mobile app for tech-illiterate users (e
 
 ```
 app-cheat-sheet/
-├── App.tsx                          # Root: bootstrap, Paper, NavigationContainer + ref, NavigationRefProvider
+├── App.tsx                          # Root: bootstrap, useAuth/useFavoritesSync hooks
 ├── app.json                         # PWA web config (manifest, themeColor, standalone)
 ├── index.ts                         # Entry (registerRootComponent)
-├── package.json                     # Expo 54, React Navigation, Firebase, zustand, i18next, etc.
+├── package.json                     # Expo 54, Zustand (with persistence), i18next
 ├── .env.example                     # Firebase env placeholders
 ├── tsconfig.json
 ├── assets/                           # Icons (Expo default)
 └── src/
     ├── bootstrap.ts                 # Firebase init + first-launch seed import
     ├── types/
-    │   └── guide.ts                 # Guide / GuideStep schema
+    │   └── guide.ts                 # Guide / GuideStep schema (+ baseId)
     ├── data/
     │   └── seed-guides/
     │       ├── index.ts             # SEED_GUIDE_IDS manifest
     │       └── ...                  # Bundled JSON guides
     ├── services/
-    │   ├── api.ts                   # Central backend client with auto-auth (Firebase)
-    │   ├── firebase.ts              # Auth/Firestore/analytics stub + fetchGuide(s)
-    │   ├── storage.ts               # expo-file-system/legacy + LRU cache, meta, save/load guides
-    │   └── seedImport.ts            # First-launch import of bundled JSON into storage
+    │   ├── api.ts                   # Central backend client with auto-auth & logging
+    │   ├── firebase.ts              # Auth/Firestore/analytics utilities
+    │   ├── storage.ts               # expo-file-system storage + LRU cache
+    │   └── seedImport.ts            # First-launch import of bundled JSON
     ├── store/
-    │   └── useAppStore.ts           # Zustand: language, favorites, history (viewedGuides), TTS/high-contrast
+    │   └── useAppStore.ts           # Zustand: Persisted settings, favorites, history
     ├── theme/
     │   └── colors.ts                # Centralized palette: Default + High Contrast
     ├── i18n/
     │   ├── index.ts                 # i18next init
-    │   ├── en.ts                    # English strings
-    │   ├── es.ts                    # Spanish strings
-    │   └── vi.ts                    # Vietnamese strings
-    ├── context/
-    │   └── NavigationRefContext.tsx # Root nav ref provider + useNavigationRef
+    │   └── ...                      # Translation files (en/es/vi)
     ├── hooks/
+    │   ├── useAuth.ts               # Global auth listener & settings hydration
+    │   ├── useFavoritesSync.ts      # Debounced/background cloud sync for favorites
     │   ├── useAppNavigation.ts      # goToHome(), resetToHome(), goToGuide(guideId)
-    │   └── useTheme.ts              # Hook to access current theme (Default/High Contrast)
+    │   └── useTheme.ts              # Dynamic theme selector hook
     ├── components/
-    │   ├── HomeButton.tsx           # Persistent HOME (uses goToHome); dynamic theme
-    │   └── LargeSearchBar.tsx       # Central search bar; dynamic theme
+    │   ├── HomeButton.tsx           # Persistent HOME; safety UX
+    │   └── LargeSearchBar.tsx       # Cloud + Local search bar
     ├── screens/
-    │   ├── SearchScreen.tsx         # Google-like search + top-inquiry chips
-    │   ├── HomeScreen.tsx           # Browse: History (Recently Viewed) + categories
-    │   ├── GuideDetailScreen.tsx   # Steps, progress, TTS, Favorites toggle, HOME
-    │   ├── LibraryScreen.tsx        # Combined "Your Guides" + "Favorites" sections (collapsible)
-    │   └── SettingsScreen.tsx       # Language (EN/ES/VI), high contrast toggle, TTS, Firebase Auth
+    │   ├── LandingScreen.tsx        # Entry: Language selector + Cloud Search + Top Inquiries
+    │   ├── BrowseScreen.tsx         # Categories + History + Local/Cloud Search
+    │   ├── GuideDetailScreen.tsx    # Steps, progress, TTS, Optimistic Favorites
+    │   ├── LibraryScreen.tsx        # Favorites & Created Guides with Cloud-to-Local fallback
+    │   └── SettingsScreen.tsx       # Profile, High Contrast, TTS, Firebase Auth
     └── navigation/
-        ├── types.ts                 # Navigation types (RootTabParamList etc.)
-        ├── MainTabs.tsx              # Bottom tabs: Home (Browse), Library, Settings
-        └── RootNavigator.tsx         # Stack: MainTabs, GuideDetail
+        ├── types.ts                 # Navigation types (Landing, Browse, etc.)
+        ├── MainTabs.tsx             # Bottom tabs: Browse, Library, Settings
+        └── RootNavigator.tsx        # Stack: Landing, MainTabs, GuideDetail
 ```
 
 ## Features & Implementation
 
-- **Internationalization (i18n):** Full support for **English, Spanish, and Vietnamese**.
+- **Internationalization (i18n):** Full support for **English, Spanish, and Vietnamese**. Selected language is accessible on the **Landing** screen and persisted offline.
+- **Smart Favorites & Sync:**
+  - **Optimistic UI:** Favorite toggles update instantly.
+  - **Cloud Sync:** Debounced (30s) and background synchronization via `useFavoritesSync`.
+  - **Local-to-Cloud Fallback:** The Library merges cloud data with local favorites to ensure "orphaned" or local-only guides are never lost.
+- **Hybrid Search:**
+  - Integrated into both **Landing** and **Browse** screens.
+  - Merges results from the local filesystem and the backend API.
+  - Automatic deduplication using `baseId`, preferring cloud-hosted or newer versions.
+- **Offline Persistence:**
+  - State managed via **Zustand** with `persist` middleware and `AsyncStorage`.
+  - Language choice, favorites, and viewing history survive app restarts.
 - **Backend Sync:** 
-  - Centralized API client (`src/services/api.ts`) with custom fetch wrapper.
-  - Automatic Firebase ID token attachment for protected routes.
-  - Settings (Language, TTS, High Contrast) sync to backend on update and hydrate on sign-in.
-- **Unified Navigation:**
-  - **Search Landing:** Primary entry point with predictive chips.
-  - **Browse (Home):** Dynamic dashboard showing **Recently Viewed** history and categories.
-  - **Library:** Merged "Your Guides" and "Favorites" with collapsible accordion UI.
-- **Firebase Auth:** 
-  - Integrated into Settings for Sign In / Sign Up.
-  - State managed in Zustand for instant UI updates.
+  - Centralized API client (`api.ts`) with automatic Firebase ID token refreshes and detailed logging.
+  - Profile hydration ensures settings are restored across devices on sign-in.
 
 ## Setup
 

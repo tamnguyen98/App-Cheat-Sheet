@@ -12,6 +12,7 @@ export interface GuideStep {
 
 export interface Guide {
   id: string;
+  baseId?: string; // Root ID without language suffix
   title: string;
   version: number;
   lastUpdated: string;

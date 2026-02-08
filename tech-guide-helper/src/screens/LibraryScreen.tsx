@@ -48,6 +48,7 @@ export function LibraryScreen() {
       setMyGuides([]);
       // Not logged in: show local/seed favorites if any
       if (isInitial) {
+        console.log('[Library] Not logged in, loading local favorites');
         const local = await loadAllGuides();
         setFavoriteGuides(local.filter(g => favoriteIds.includes(g.id)));
       }
@@ -58,17 +59,33 @@ export function LibraryScreen() {
     setIsLoadingFavorites(true);
     try {
       const currentOffset = isInitial ? 0 : myGuides.length;
+      console.log(`[Library] Fetching cloud library, offset: ${currentOffset}`);
       const response = await api.getMyLibrary({ limit: PAGE_SIZE, offset: currentOffset });
-      console.log('Library response:', response);
+
       if (isInitial) {
-        setFavoriteGuides(response.favorites);
+        // Task 1 fix: Check for "orphans" (guides in favoriteIds but not in cloud response)
+        const cloudFavIds = response.favorites.map(g => g.id);
+        const orphans = favoriteIds.filter(id => !cloudFavIds.includes(id));
+
+        console.log('[Library] Cloud favorites count:', response.favorites.length);
+        console.log('[Library] Orphan favorites:', orphans);
+
+        let mergedFavorites = response.favorites;
+        if (orphans.length > 0) {
+          const localGuides = await loadAllGuides();
+          const localOrphans = localGuides.filter(g => orphans.includes(g.id));
+          console.log('[Library] Found local orphans:', localOrphans.length);
+          mergedFavorites = [...response.favorites, ...localOrphans];
+        }
+
+        setFavoriteGuides(mergedFavorites);
         setMyGuides(response.created);
       } else {
         appendFavoriteGuides(response.favorites);
         appendMyGuides(response.created);
       }
     } catch (e) {
-      console.error('Failed to load library data', e);
+      console.error('[Library] Failed to load library data', e);
     } finally {
       setIsLoadingMyGuides(false);
       setIsLoadingFavorites(false);

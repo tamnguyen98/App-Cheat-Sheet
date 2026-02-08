@@ -41,15 +41,26 @@ export function GuideDetailScreen() {
   const ttsAutoPlay = useAppStore((s) => s.ttsAutoPlay);
   const addFavorite = useAppStore((s) => s.addFavorite);
   const removeFavorite = useAppStore((s) => s.removeFavorite);
-  const favorites = useAppStore((s) => s.favorites);
+  const favoriteIds = useAppStore((s) => s.favorites);
+  const favoriteGuides = useAppStore((s) => s.favoriteGuides);
   const idToken = useAppStore((s) => s.idToken);
   const incrementGuidesViewedToday = useAppStore((s) => s.incrementGuidesViewedToday);
   const addViewedGuide = useAppStore((s) => s.addViewedGuide);
 
-  const isFav = favorites.includes(guideId || '');
+  // Task 2 fix: check hydrated favoriteGuides list (cloud + local orphans)
+  // Matches by ID or baseId (to handle cloud vs local search variants)
+  const isFav = favoriteGuides.some(g => g.id === guideId || g.baseId === guideId);
+
+  console.log('[GuideDetail] Status Check:', {
+    guideId,
+    isFav,
+    totalFavoriteGuides: favoriteGuides.length,
+    inSyncIds: favoriteIds.includes(guideId || ''),
+  });
 
   const toggleFavorite = () => {
     if (!guideId) return;
+    console.log('[GuideDetail] Toggling favorite', { guideId, currentIsFav: isFav });
     if (isFav) {
       removeFavorite(guideId);
     } else {
@@ -234,7 +245,7 @@ export function GuideDetailScreen() {
   const steps = guide.steps ?? [];
   const currentStep = steps[currentStepIndex];
   const progress = steps.length ? (currentStepIndex + 1) / steps.length : 0;
-  const isFavorite = favorites.includes(guide.id);
+  const isFavorite = isFav;
 
   return (
     <ScreenWrapper padding={10}>

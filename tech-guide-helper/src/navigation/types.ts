@@ -12,16 +12,16 @@ import type {
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-/** Tab bar: Home (browse), Library, Settings */
+/** Tab bar: Browse, Library, Settings */
 export type RootTabParamList = {
-  Search: undefined;
-  Home: undefined;
+  Browse: undefined;
   Library: undefined;
   Settings: undefined;
 };
 
 /** Root stack: tabs + guide detail */
 export type RootStackParamList = {
+  Landing: undefined;
   MainTabs: NavigatorScreenParams<RootTabParamList>;
   GuideDetail: { guideId: string };
 };
