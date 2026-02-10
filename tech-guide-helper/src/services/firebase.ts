@@ -9,6 +9,12 @@ import { getFirestore, Firestore } from 'firebase/firestore';
 import { getAnalytics, Analytics, isSupported } from 'firebase/analytics';
 import { Guide } from '../types/guide';
 
+/**
+ * Firebase config logic. 
+ * Secrets are loaded from EXPO_PUBLIC_* environment variables.
+ * These variables should be defined in a .env file (not checked into git).
+ * Note: Expo bundles these into the app at build time.
+ */
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY ?? '',
   authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN ?? '',
@@ -30,6 +36,7 @@ export function initFirebase(): void {
     __DEV__ && console.log('Firebase config missing; running without Firebase.');
     return;
   }
+  console.log(firebaseConfig);
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);

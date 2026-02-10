@@ -1,9 +1,9 @@
 {
-  "id": "zoom-join-android-es",
-  "title": "Unirse a una reunión de Zoom en Android",
-  "version": 3,
+  "id": "zoom-join-ios-es",
+  "title": "Unirse a una reunión de Zoom en iPhone o iPad",
+  "version": 2,
   "lastUpdated": "2025-01-15",
-  "deviceFamily": ["android-generic"],
+  "deviceFamily": ["ios-iphone"],
   "language": "es",
   "category": "Llamadas de Video",
   "steps": [

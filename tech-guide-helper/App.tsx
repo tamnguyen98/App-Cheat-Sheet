@@ -15,10 +15,14 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import type { RootNavigationRef } from './src/navigation/types';
 import './src/i18n';
 import { ScreenWrapper } from './src/components/ScreenWrapper';
+import { useFavoritesSync } from './src/hooks/useFavoritesSync';
+import { useAuth } from './src/hooks/useAuth';
 
 const MIN_FONT_SIZE = 18;
 
 export default function App() {
+  useAuth();
+  useFavoritesSync();
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const rootNavRef = useRef<RootNavigationRef | null>(null);
@@ -38,7 +42,7 @@ export default function App() {
           </Text>
           <StatusBar style="auto" />
         </SafeAreaView>
-        
+
       </SafeAreaProvider>
     );
   }
@@ -59,14 +63,14 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-        <PaperProvider>
-          <NavigationContainer ref={rootNavRef}>
-            <NavigationRefProvider navigationRef={rootNavRef}>
-              <RootNavigator />
-              <StatusBar style="auto" />
-            </NavigationRefProvider>
-          </NavigationContainer>
-        </PaperProvider>
+      <PaperProvider>
+        <NavigationContainer ref={rootNavRef}>
+          <NavigationRefProvider navigationRef={rootNavRef}>
+            <RootNavigator />
+            <StatusBar style="auto" />
+          </NavigationRefProvider>
+        </NavigationContainer>
+      </PaperProvider>
     </SafeAreaProvider>
   );
 }

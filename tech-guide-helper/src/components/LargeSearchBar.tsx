@@ -13,6 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '../hooks/useTheme';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -35,10 +36,42 @@ export function LargeSearchBar({
   accessibilityHint?: string;
 }) {
   const { t } = useTranslation();
+  const theme = useTheme();
   const [focused, setFocused] = useState(false);
   const place = placeholder ?? t('home.searchPlaceholder');
   const a11yLabel = accessibilityLabel ?? t('home.searchPlaceholder');
   const a11yHint = accessibilityHint ?? t('home.searchHint');
+
+  const styles = StyleSheet.create({
+    wrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.surface,
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: focused ? theme.borderFocus : theme.border,
+      paddingHorizontal: 16,
+      minHeight: MIN_TOUCH_DP + 8,
+    },
+    input: {
+      flex: 1,
+      fontSize: MIN_FONT_SIZE,
+      paddingVertical: 14,
+      color: theme.textPrimary,
+    },
+    voiceButton: {
+      minWidth: MIN_TOUCH_DP,
+      minHeight: MIN_TOUCH_DP,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    voiceLabel: {
+      fontSize: 24,
+    },
+    pressed: {
+      opacity: 0.7,
+    },
+  });
 
   return (
     <View style={styles.wrapper}>
@@ -47,8 +80,8 @@ export function LargeSearchBar({
         onChangeText={onChangeText}
         onSubmitEditing={onSubmit}
         placeholder={place}
-        placeholderTextColor="#666"
-        style={[styles.input, focused && styles.inputFocused]}
+        placeholderTextColor={theme.inputPlaceholder}
+        style={styles.input}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         accessibilityLabel={a11yLabel}
@@ -65,9 +98,9 @@ export function LargeSearchBar({
             styles.voiceButton,
             pressed && styles.pressed,
           ]}
-          accessibilityLabel="Search by voice"
+          accessibilityLabel={t('common.searchByVoice')}
           accessibilityRole="button"
-          accessibilityHint="Tap to speak your search"
+          accessibilityHint={t('common.searchByVoiceHint')}
         >
           <Text style={styles.voiceLabel}>🎤</Text>
         </Pressable>
@@ -75,37 +108,3 @@ export function LargeSearchBar({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#ccc',
-    paddingHorizontal: 16,
-    minHeight: MIN_TOUCH_DP + 8,
-  },
-  input: {
-    flex: 1,
-    fontSize: MIN_FONT_SIZE,
-    paddingVertical: 14,
-    color: '#111',
-  },
-  inputFocused: {
-    borderColor: '#2d7a5e',
-  },
-  voiceButton: {
-    minWidth: MIN_TOUCH_DP,
-    minHeight: MIN_TOUCH_DP,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  voiceLabel: {
-    fontSize: 24,
-  },
-  pressed: {
-    opacity: 0.7,
-  },
-});

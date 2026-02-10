@@ -7,6 +7,7 @@ import React from 'react';
 import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useAppNavigation } from '../hooks/useAppNavigation';
+import { useTheme } from '../hooks/useTheme';
 
 const MIN_TOUCH_DP = 48;
 
@@ -25,10 +26,32 @@ export function HomeButton({
 }) {
   const { t } = useTranslation();
   const { goToHome } = useAppNavigation();
+  const theme = useTheme();
 
   const theLabel = label ?? t('settings.homeButton');
   const a11yLabel = accessibilityLabel ?? theLabel;
   const a11yHint = accessibilityHint ?? t('settings.homeHint');
+
+  const styles = StyleSheet.create({
+    button: {
+      minHeight: MIN_TOUCH_DP,
+      minWidth: MIN_TOUCH_DP * 2,
+      paddingHorizontal: 24,
+      paddingVertical: 14,
+      backgroundColor: theme.primary,
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    pressed: {
+      opacity: 0.85,
+    },
+    text: {
+      fontSize: 20,
+      fontWeight: '700',
+      color: theme.textInverse,
+    },
+  });
 
   return (
     <Pressable
@@ -45,24 +68,3 @@ export function HomeButton({
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    minHeight: MIN_TOUCH_DP,
-    minWidth: MIN_TOUCH_DP * 2,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    backgroundColor: '#2d7a5e',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pressed: {
-    opacity: 0.85,
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#ffffff',
-  },
-});

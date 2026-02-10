@@ -1,6 +1,6 @@
 /**
  * React Navigation type overrides and composite types.
- * Root stack: MainTabs, GuideDetail. Tabs: Search (landing), Home, Library, Favorites, Settings.
+ * Root stack: MainTabs, GuideDetail. Tabs: Home, Library, Settings.
  */
 
 import type {
@@ -12,19 +12,19 @@ import type {
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-/** Tab bar: Search (landing) first, then Home (browse), Library, Favorites, Settings */
+/** Tab bar: Browse, Library, Settings */
 export type RootTabParamList = {
-  Search: undefined;
-  Home: undefined;
+  Browse: undefined;
   Library: undefined;
-  Favorites: undefined;
   Settings: undefined;
 };
 
 /** Root stack: tabs + guide detail */
 export type RootStackParamList = {
+  Landing: undefined;
   MainTabs: NavigatorScreenParams<RootTabParamList>;
   GuideDetail: { guideId: string };
+  GuideEditor: { guideId?: string }; // No ID = Create, ID = Edit
 };
 
 /** Navigation prop when inside a root stack screen (e.g. GuideDetail). */
@@ -48,6 +48,6 @@ export type RootNavigationRef = NavigationContainerRefWithCurrent<RootStackParam
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    interface RootParamList extends RootStackParamList { }
   }
 }
