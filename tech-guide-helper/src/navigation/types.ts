@@ -24,6 +24,7 @@ export type RootStackParamList = {
   Landing: undefined;
   MainTabs: NavigatorScreenParams<RootTabParamList>;
   GuideDetail: { guideId: string };
+  GuideEditor: { guideId?: string }; // No ID = Create, ID = Edit
 };
 
 /** Navigation prop when inside a root stack screen (e.g. GuideDetail). */

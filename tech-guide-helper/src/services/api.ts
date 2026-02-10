@@ -7,7 +7,7 @@ import { useAppStore } from '../store/useAppStore';
 import { Guide } from '../types/guide';
 import { getFirebaseAuth } from './firebase';
 
-const BASE_URL = 'http://192.168.2.107:5001';
+const BASE_URL = 'http://192.168.2.249:5001';
 const TIMEOUT_MS = 10000;
 
 export interface UserSettings {
@@ -150,5 +150,66 @@ export const api = {
     async getMyLibrary(params: { limit?: number; offset?: number }): Promise<LibraryResponse> {
         const query = new URLSearchParams(params as any).toString();
         return apiRequest<LibraryResponse>(`/me/library?${query}`);
+    },
+
+    /** Create a new private guide. */
+    async createGuide(guide: Partial<Guide>): Promise<Guide> {
+        // // Mock Implementation
+        // console.log('[API Mock] Creating guide:', guide);
+        // return new Promise((resolve) => {
+        //     setTimeout(() => {
+        //         resolve({
+        //             ...guide,
+        //             id: `local-${Date.now()}`,
+        //             creatorUid: 'current-user',
+        //             isPrivate: true,
+        //             status: 'draft',
+        //             lastUpdated: new Date().toISOString(),
+        //             version: 1,
+        //         } as Guide);
+        //     }, 500);
+        // });
+
+        return apiRequest<Guide>('/me/guides', {
+            method: 'POST',
+            body: JSON.stringify(guide),
+        });
+
+    },
+
+    /** Update an existing guide. */
+    async updateGuide(id: string, guide: Partial<Guide>): Promise<Guide> {
+        // // Mock Implementation
+        // console.log(`[API Mock] Updating guide ${id}:`, guide);
+        // return new Promise((resolve) => {
+        //     setTimeout(() => {
+        //         resolve({
+        //             ...guide,
+        //             id,
+        //             lastUpdated: new Date().toISOString(),
+        //             version: (guide.version || 1) + 1,
+        //         } as Guide);
+        //     }, 500);
+        // });
+
+        return apiRequest<Guide>(`/me/guides/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(guide),
+        });
+
+    },
+
+    /** Delete a guide. */
+    async deleteGuide(id: string): Promise<void> {
+        // // Mock Implementation
+        // console.log(`[API Mock] Deleting guide ${id}`);
+        // return new Promise((resolve) => {
+        //     setTimeout(() => resolve(), 500);
+        // });
+
+        return apiRequest<void>(`/me/guides/${id}`, {
+            method: 'DELETE',
+        });
+
     },
 };

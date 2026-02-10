@@ -47,12 +47,15 @@ app-cheat-sheet/
     │   └── useTheme.ts              # Dynamic theme selector hook
     ├── components/
     │   ├── HomeButton.tsx           # Persistent HOME; safety UX
-    │   └── LargeSearchBar.tsx       # Cloud + Local search bar
+    │   ├── LargeSearchBar.tsx       # Cloud + Local search bar
+    │   ├── GuideForm.tsx            # Form for creating/editing guides
+    │   └── StepEditor.tsx           # Individual step editor component
     ├── screens/
     │   ├── LandingScreen.tsx        # Entry: Language selector + Cloud Search + Top Inquiries
     │   ├── BrowseScreen.tsx         # Categories + History + Local/Cloud Search
     │   ├── GuideDetailScreen.tsx    # Steps, progress, TTS, Optimistic Favorites
     │   ├── LibraryScreen.tsx        # Favorites & Created Guides with Cloud-to-Local fallback
+    │   ├── GuideEditorScreen.tsx    # Create/Edit Guide flow
     │   └── SettingsScreen.tsx       # Profile, High Contrast, TTS, Firebase Auth
     └── navigation/
         ├── types.ts                 # Navigation types (Landing, Browse, etc.)

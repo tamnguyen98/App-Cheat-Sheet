@@ -70,56 +70,59 @@ export function BrowseScreen() {
         );
     }, [viewedGuideIds]);
 
-    // Task 2: Align search behavior with Landing (cloud search + dedupe)
-    useEffect(() => {
-        if (!search.trim()) {
+    const handleSearch = useCallback(async (query: string) => {
+        if (!query.trim()) {
             setSearchResults([]);
             return;
         }
 
-        const timer = setTimeout(async () => {
+        try {
+            console.log(`[Browse] Triggering search flow for: "${query}"`);
+
+            // 1. Cloud Search
+            let cloud: Guide[] = [];
             try {
-                console.log(`[Browse] Triggering search flow for: "${search}"`);
-
-                // 1. Cloud Search
-                let cloud: Guide[] = [];
-                try {
-                    cloud = await api.getGuides({
-                        search: search,
-                        lang: language,
-                        device: deviceFamily
-                    });
-                    console.log(`[Browse] Cloud results: ${cloud.length}`);
-                } catch (e) {
-                    console.warn('[Browse] Cloud search failed', e);
-                }
-
-                // 2. Local Filter
-                const local = guides.filter(
-                    (g) =>
-                        g.title.toLowerCase().includes(search.toLowerCase()) ||
-                        g.category?.toLowerCase().includes(search.toLowerCase())
-                );
-
-                // 3. Merge & Deduplicate
-                const mergedMap = new Map<string, Guide>();
-                local.forEach(g => mergedMap.set(g.baseId || g.id, g));
-                cloud.forEach(g => {
-                    const key = g.baseId || g.id;
-                    const existing = mergedMap.get(key);
-                    if (!existing || g.version >= existing.version) {
-                        mergedMap.set(key, g);
-                    }
+                cloud = await api.getGuides({
+                    search: query,
+                    lang: language,
+                    device: deviceFamily
                 });
-
-                setSearchResults(Array.from(mergedMap.values()));
+                console.log(`[Browse] Cloud results: ${cloud.length}`);
             } catch (e) {
-                console.error('[Browse] Search failed', e);
+                console.warn('[Browse] Cloud search failed', e);
             }
-        }, 300);
 
+            // 2. Local Filter
+            const local = guides.filter(
+                (g) =>
+                    g.title.toLowerCase().includes(query.toLowerCase()) ||
+                    g.category?.toLowerCase().includes(query.toLowerCase())
+            );
+
+            // 3. Merge & Deduplicate
+            const mergedMap = new Map<string, Guide>();
+            local.forEach(g => mergedMap.set(g.baseId || g.id, g));
+            cloud.forEach(g => {
+                const key = g.baseId || g.id;
+                const existing = mergedMap.get(key);
+                if (!existing || g.version >= existing.version) {
+                    mergedMap.set(key, g);
+                }
+            });
+
+            setSearchResults(Array.from(mergedMap.values()));
+        } catch (e) {
+            console.error('[Browse] Search failed', e);
+        }
+    }, [language, deviceFamily, guides]);
+
+    // Debounced search for live results
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            handleSearch(search);
+        }, 300);
         return () => clearTimeout(timer);
-    }, [search, language, deviceFamily, guides]);
+    }, [search, handleSearch]);
 
     const openGuide = (guide: Guide) => goToGuide(guide.id);
 
@@ -178,7 +181,7 @@ export function BrowseScreen() {
                     <LargeSearchBar
                         value={search}
                         onChangeText={setSearch}
-                        onSubmit={() => { }}
+                        onSubmit={() => handleSearch(search)}
                         placeholder={t('search.placeholder')}
                     />
                 </View>
