@@ -24,6 +24,7 @@ import type { GuideDetailRouteProp } from '../navigation/types';
 import { ScreenWrapper } from '../components/ScreenWrapper';
 import { ASSET_MAP } from '../services/seedImport';
 import { useTheme } from '../hooks/useTheme';
+import { api } from '../services/api';
 
 const MIN_FONT_SIZE = 18;
 const MIN_TOUCH_DP = 48;
@@ -68,10 +69,37 @@ export function GuideDetailScreen() {
     }
   };
 
+  const myGuides = useAppStore((s) => s.myGuides);
+
   useEffect(() => {
     if (!guideId) return;
-    loadGuide(guideId).then(setGuide);
-  }, [guideId]);
+
+    const findGuide = async () => {
+      // 1. Check local store (user-created guides in memory)
+      const inStore = myGuides.find(g => g.id === guideId);
+      if (inStore) {
+        setGuide(inStore);
+        return;
+      }
+
+      // 2. Check filesystem (seed guides / offline cache)
+      const local = await loadGuide(guideId);
+      if (local) {
+        setGuide(local);
+        return;
+      }
+
+      // 3. Fallback to API (cloud search results or shared guides)
+      try {
+        const cloud = await api.getGuide(guideId, { lang: language });
+        if (cloud) setGuide(cloud);
+      } catch (e) {
+        console.error('[GuideDetail] Failed to load guide from any source', e);
+      }
+    };
+
+    findGuide();
+  }, [guideId, myGuides, language]);
 
   useEffect(() => {
     if (!guideId) return;

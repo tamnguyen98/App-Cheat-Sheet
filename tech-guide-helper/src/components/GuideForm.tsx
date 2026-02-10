@@ -53,13 +53,16 @@ export function GuideForm({
     const [title, setTitle] = useState(initialState?.title || '');
     const [category, setCategory] = useState(initialState?.category || CATEGORIES[0]);
     const [deviceFamilies, setDeviceFamilies] = useState<string[]>(initialState?.deviceFamilies || []);
-    const [steps, setSteps] = useState<GuideStep[]>(initialState?.steps || []);
+    const [steps, setSteps] = useState<GuideStep[]>(
+        initialState?.steps.map(s => ({ ...s, id: s.id || Math.random().toString(36).substr(2, 9) })) || []
+    );
 
     // Validation Errors
     const [errors, setErrors] = useState<{ title?: string; steps?: string }>({});
 
     const handleAddStep = () => {
         const newStep: GuideStep = {
+            id: Math.random().toString(36).substr(2, 9),
             stepNumber: steps.length + 1,
             text: '',
             image: '',
@@ -353,7 +356,7 @@ export function GuideForm({
 
                 {steps.map((step, index) => (
                     <StepEditor
-                        key={index} // Using index as key since simple list. Ideally use unique ID if available.
+                        key={step.id}
                         step={step}
                         index={index}
                         totalSteps={steps.length}

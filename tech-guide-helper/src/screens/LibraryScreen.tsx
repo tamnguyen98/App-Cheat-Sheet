@@ -256,17 +256,19 @@ export function LibraryScreen() {
           <Text style={styles.title} allowFontScaling>
             {t('library.title')}
           </Text>
-          <Pressable
-            onPress={() => {
-              setRefreshing(true);
-              loadLibrary(true);
-            }}
-            style={({ pressed }) => [styles.refreshButton, pressed && styles.pressed]}
-            accessibilityLabel="Refresh library"
-            accessibilityRole="button"
-          >
-            <Text style={styles.refreshText}>↻</Text>
-          </Pressable>
+          {idToken && (
+            <Pressable
+              onPress={() => {
+                setRefreshing(true);
+                loadLibrary(true);
+              }}
+              style={({ pressed }) => [styles.refreshButton, pressed && styles.pressed]}
+              accessibilityLabel="Refresh library"
+              accessibilityRole="button"
+            >
+              <Text style={styles.refreshText}>↻</Text>
+            </Pressable>
+          )}
         </View>
 
         {/* Favorites Section */}

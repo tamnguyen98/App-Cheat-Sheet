@@ -4,6 +4,7 @@
  */
 
 export interface GuideStep {
+  id?: string; // Client-side unique ID for stable keys
   stepNumber: number;
   text: string;
   image: string;

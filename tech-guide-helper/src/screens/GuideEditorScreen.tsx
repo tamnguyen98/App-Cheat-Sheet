@@ -53,8 +53,10 @@ export function GuideEditorScreen() {
         try {
             if (isEditMode && guideId) {
                 const updated = await api.updateGuide(guideId, guideData);
-                // Update store
-                const updatedList = myGuides.map(g => g.id === guideId ? updated : g);
+                // Update store - merge with guideData to ensure we don't lose local state if API returns partial
+                const updatedList = myGuides.map(g =>
+                    g.id === guideId ? { ...g, ...guideData, ...updated } : g
+                );
                 setMyGuides(updatedList);
                 Alert.alert(t('common.success'), t('editor.saveSuccess'));
                 navigation.goBack();
