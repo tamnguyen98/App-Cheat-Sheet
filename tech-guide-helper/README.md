@@ -80,6 +80,10 @@ app-cheat-sheet/
 - **Backend Sync:** 
   - Centralized API client (`api.ts`) with automatic Firebase ID token refreshes and detailed logging.
   - Profile hydration ensures settings are restored across devices on sign-in.
+- **User-Generated Guides:**
+  - Create, edit, and manage custom step-by-step guides.
+  - Private by default, with support for future review/public sharing.
+  - Intuitive interface designed for senior accessibility.
 
 ## Setup
 

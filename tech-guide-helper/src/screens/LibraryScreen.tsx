@@ -343,14 +343,16 @@ export function LibraryScreen() {
           {guidesExpanded && (
             <View>
               {/* CREATE BUTTON */}
-              <Pressable
-                onPress={() => (navigation as any).navigate('GuideEditor')} // Type cast for now or update hook
-                style={({ pressed }) => [styles.createButton, pressed && styles.pressed]}
-                accessibilityLabel={t('editor.createGuide')}
-                accessibilityRole="button"
-              >
-                <Text style={styles.createButtonText}>+ {t('editor.createGuide')}</Text>
-              </Pressable>
+              {idToken && (
+                <Pressable
+                  onPress={() => (navigation as any).navigate('GuideEditor')} // Type cast for now or update hook
+                  style={({ pressed }) => [styles.createButton, pressed && styles.pressed]}
+                  accessibilityLabel={t('editor.createGuide')}
+                  accessibilityRole="button"
+                >
+                  <Text style={styles.createButtonText}>+ {t('editor.createGuide')}</Text>
+                </Pressable>
+              )}
 
               {isLoadingMyGuides && myGuides.length === 0 ? (
                 <ActivityIndicator size="small" color={theme.primary} style={styles.loader} />
